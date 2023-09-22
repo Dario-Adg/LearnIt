@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS genres;
 
 CREATE TABLE `User` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
@@ -10,13 +9,3 @@ CREATE TABLE `User` (
     `IsAdmin` BOOLEAN NOT NULL ,
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
-
-
-CREATE TABLE movies (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    details TEXT NOT NULL,
-    releaseDate YEAR NOT NULL,
-    genre_id INT,
-    FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE SET NULL ON UPDATE CASCADE
-);
