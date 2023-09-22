@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Program {
     public String Name;
-    public List<Module> Modules;
+    public List<ProgramModule> ProgramModules;
 
-    public Program (String name, List<Module> modules){
+    public Program (String name, List<ProgramModule> programModules){
         this.Name = name;
-        this.Modules = modules;
+        this.ProgramModules = programModules;
     }
 }

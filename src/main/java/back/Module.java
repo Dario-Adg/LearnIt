@@ -4,10 +4,12 @@ import java.util.List;
 
 public class Module {
     public String Name;
-    public List<Lesson> Lessons;
+    public String Description;
+    public List<ModuleLesson> ModuleLessons;
 
-    public Module (String name, List<Lesson> lessons){
+    public Module (String name, String description, List<ModuleLesson> moduleLessons){
         this.Name = name;
-        this.Lessons = lessons;
+        this.Description = description;
+        this.ModuleLessons = moduleLessons;
     }
 }
