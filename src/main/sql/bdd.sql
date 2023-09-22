@@ -1,0 +1,22 @@
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS genres;
+
+CREATE TABLE `User` (
+    `Id` BIGINT NOT NULL AUTO_INCREMENT ,
+    `Email` VARCHAR(150) NOT NULL ,
+    `Password` VARCHAR(255) NOT NULL ,
+    `FirstName` VARCHAR(75) NOT NULL ,
+    `LastName` VARCHAR(75) NOT NULL ,
+    `IsAdmin` BOOLEAN NOT NULL ,
+    PRIMARY KEY (`Id`))
+    ENGINE = InnoDB;
+
+
+CREATE TABLE movies (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    details TEXT NOT NULL,
+    releaseDate YEAR NOT NULL,
+    genre_id INT,
+    FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE SET NULL ON UPDATE CASCADE
+);
