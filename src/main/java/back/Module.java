@@ -1,19 +1,32 @@
 package back;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Module {
     public String Name;
-    //public List<Lesson> Lessons;
+    public List<Lesson> Lessons;
     public Connection conn = null;
     public PreparedStatement stmt = null;
 
-    public Module (String name ){//List<Lesson> lessons
+    public Module (String name, List<Lesson> lessons){
         this.Name = name;
-        //this.Lessons = lessons;
+        this.Lessons = lessons;
     }
 
+    public void SelecteModules(){
+        try{
+
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            String sql = "INSERT INTO module (Name, Lessons) VALUES(?, ?)";
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
     public void AddLesson() {
         try {
 

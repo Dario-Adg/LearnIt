@@ -10,17 +10,14 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        Module[] modules = new Module[5];
-        Module module1 = new Module("fierstProgram");
-        Module module2 = new Module("secondetProgram");
-        modules[0] = module1;
-        modules[1] = module2;
+        List<Module> modules;
+        //modules = new List<Module>();
 
 
 
 
 
-        Program program = new Program("1", "Denys", (List<Module>) modules[0], "pas de description");
+        //Program program = new Program("1", "Denys", , "pas de description");
 
     }
 }
