@@ -20,7 +20,7 @@ public class User {
     public Date DateOfBirth;
 
     public User (String firstName, String lastName, String email, String password, boolean isAdmin,
-                 boolean isJobSeeker, int DiplomaNumber, List<UserProgram> userPrograms, String dateOfBirth){
+                 boolean isJobSeeker, int DiplomaNumber, List<UserProgram> userPrograms, Date dateOfBirth){
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Email = email;
@@ -29,26 +29,27 @@ public class User {
         this.IsJobSeeker = isJobSeeker;
         this.DiplomaNumber = DiplomaNumber;
         this.UserPrograms = userPrograms;
-
-        DateFormat Df = new SimpleDateFormat("MM-dd-yyyy");
-        Date Date =null;
-
-        try {
-            Date= Df.parse(dateOfBirth);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        this.DateOfBirth = Date;
+        this.DateOfBirth = dateOfBirth;
     }
 
-    public static void AddUser(String email, String password, String firstName, String lastName, boolean isJobSeeker, Date dateOfBirth){
+    public static void AddUser(String email, String password, String firstName, String lastName, boolean isJobSeeker,
+                               String dateOfBirth){
 
         Connection Conn = ConnectionBDD.ConnectionBDD();
 
         PreparedStatement Stmt = null;
 
+        DateFormat Df = new SimpleDateFormat("yyyy-MM-dd");
+        Date Date = null;
+
         try {
+            Date = Df.parse(dateOfBirth);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
             String SqlQuery = "INSERT INTO user (`Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsJobSeeker`, `DateOfBirth`) VALUES (?,?,?,?,?,?,?)";
 
             Stmt = Conn.prepareStatement(SqlQuery);
@@ -58,7 +59,7 @@ public class User {
             Stmt.setString(4, lastName);
             Stmt.setBoolean(5, false);
             Stmt.setBoolean(6, isJobSeeker);
-            Stmt.setDate(7, (java.sql.Date) dateOfBirth);
+            Stmt.setDate(7, (java.sql.Date) Date);
 
 
             Stmt.executeUpdate();

@@ -1,5 +1,7 @@
 package org.example;
 
+import back.User;
+
 import java.util.Scanner;
 
 public class Main {
@@ -44,10 +46,16 @@ public class Main {
         String firstName = scan.nextLine();
         System.out.println("Renseignez votre nom");
         String lastName = scan.nextLine();
-        System.out.println("Etes-vous demandeur d'emplois");
-        boolean jobSeeker = scan.nextBoolean();
+        System.out.println("Etes-vous demandeur d'emplois (oui/non)");
+        String jobSeeker = scan.nextLine();
+        boolean isJobSeeker = false;
+        if (jobSeeker.equals("oui")){
+            isJobSeeker = true;
+        }
+        System.out.println("Renseignez votre date de naissance");
+        String dateOfBirth = scan.nextLine();
 
-        //User.LogIn(login, password);
+        User.AddUser(login, password, firstName, lastName, isJobSeeker,dateOfBirth);
     }
 //    public static void GetProduct(){
 //        Scanner scan = new Scanner(System.in);
