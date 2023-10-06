@@ -23,50 +23,6 @@ public class Program {
 
     }
 
-    // Add for Program DataBase
-    public void AddProgram() {
-
-        try {
-
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
-            String sql = "INSERT INTO program (Name, Description) VALUES(?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, Name);
-            stmt.setString(2, Description);
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void updateProgram(){
-        try{
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit/");
-            String sql = "UPDATE program SET Name=? Description=?  WHERE id=?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, Name);
-            stmt.setString(2, Description);
-            stmt.setArray(1, (Array) Jobs);
-            stmt.setArray(1, (Array) ProgramModules);
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void delateProgram(int id) {
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
-            String sql = "DELETE FROM program WHERE id=?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.executeQuery();
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-
     public void AddModule() {
 
         try {
