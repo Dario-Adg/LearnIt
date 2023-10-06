@@ -19,7 +19,7 @@ CREATE TABLE `learnit`.`user` (
     `IsAdmin` BOOLEAN NOT NULL ,
     `IsJobSeeker` BOOLEAN NOT NULL ,
     `DateOfBirth` DATE NOT NULL ,
-    `DiplomaNumber` INT NOT NULL ,
+    `DiplomaNumber` INT NULL ,
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
 
@@ -33,7 +33,7 @@ CREATE TABLE `learnit`.`program` (
 CREATE TABLE `learnit`.`userprogram` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `UserId` BIGINT NOT NULL ,
-    `ProgramID` BIGINT NOT NULL ,
+    `ProgramId` BIGINT NOT NULL ,
     `IsValid` BOOLEAN NOT NULL ,
     `StartDateProgram` DATE NOT NULL ,
     PRIMARY KEY (`Id`))
