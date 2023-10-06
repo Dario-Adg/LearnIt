@@ -1,6 +1,13 @@
 DROP DATABASE IF EXISTS learnit;
 CREATE DATABASE learnit;
 
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS program;
+DROP TABLE IF EXISTS userprogram;
+DROP TABLE IF EXISTS module;
+DROP TABLE IF EXISTS programmodule;
+DROP TABLE IF EXISTS lesson;
+DROP TABLE IF EXISTS modulelesson;
 
 DROP TABLE IF EXISTS `learnit`.`user`;
 DROP TABLE IF EXISTS `learnit`.`program`;

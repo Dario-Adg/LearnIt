@@ -1,5 +1,10 @@
 package back;
 
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class User {
@@ -12,8 +17,10 @@ public class User {
     public int DiplomaNumber;
     public List<UserProgram> UserPrograms;
 
+    public Date DateOfBirth;
+
     public User (String firstName, String lastName, String email, String password, boolean isAdmin,
-                 boolean isJobSeeker, int DiplomaNumber, List<UserProgram> userPrograms){
+                 boolean isJobSeeker, int DiplomaNumber, List<UserProgram> userPrograms, String dateOfBirth){
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Email = email;
@@ -22,5 +29,50 @@ public class User {
         this.IsJobSeeker = isJobSeeker;
         this.DiplomaNumber = DiplomaNumber;
         this.UserPrograms = userPrograms;
+
+        DateFormat Df = new SimpleDateFormat("MM-dd-yyyy");
+        Date Date =null;
+
+        try {
+            Date= Df.parse(dateOfBirth);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.DateOfBirth = Date;
+    }
+
+    public static void AddUser(String email, String password, String firstName, String lastName, boolean isJobSeeker, Date dateOfBirth){
+
+        Connection Conn = null;
+        PreparedStatement Stmt = null;
+
+        try {
+            String SqlQuery = "INSERT INTO user (`Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsJobSeeker`, `DateOfBirth`) VALUES (?,?,?,?,?,?,?)";
+
+            Stmt = Conn.prepareStatement(SqlQuery);
+            Stmt.setString(1, email);
+            Stmt.setString(2, password);
+            Stmt.setString(3, firstName);
+            Stmt.setString(4, lastName);
+            Stmt.setBoolean(5, false);
+            Stmt.setBoolean(6, isJobSeeker);
+            Stmt.setDate(7, (java.sql.Date) dateOfBirth);
+
+
+            Stmt.executeUpdate();
+
+            // Fermeture du Statement
+            if(Stmt != null) {
+                Stmt.close();
+            }
+
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+
     }
 }
