@@ -59,8 +59,7 @@ public class User {
             Stmt.setString(4, lastName);
             Stmt.setBoolean(5, false);
             Stmt.setBoolean(6, isJobSeeker);
-            Stmt.setDate(7, (java.sql.Date) Date);
-
+            Stmt.setDate(7, new java.sql.Date(Date.getTime()));
 
             Stmt.executeUpdate();
 

@@ -52,10 +52,11 @@ public class Main {
         if (jobSeeker.equals("oui")){
             isJobSeeker = true;
         }
-        System.out.println("Renseignez votre date de naissance");
+        System.out.println("Renseignez votre date de naissance (yyyy-mm-dd)");
         String dateOfBirth = scan.nextLine();
 
         User.AddUser(login, password, firstName, lastName, isJobSeeker,dateOfBirth);
+        System.out.println("Utilisateur créer avec succès");
     }
 //    public static void GetProduct(){
 //        Scanner scan = new Scanner(System.in);
