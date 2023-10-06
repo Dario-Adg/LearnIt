@@ -1,22 +1,22 @@
 package back;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Program {
     public String Name;
+    public List<Module> Modules;
     public String Description;
-    public List<Job> Jobs;
-    public List<ProgramModule> ProgramModules;
     public Connection conn = null;
     public PreparedStatement stmt = null;
 
+    public Program(String id, String name, List<Module> modules, String description){
 
-    public Program (String name, String description, List<Job> jobs, List<ProgramModule> programModules){
         this.Name = name;
+        this.Modules = modules;
         this.Description = description;
-        this.Jobs = jobs;
-        this.ProgramModules = programModules;
+
     }
 
     public void isAdmin(){
@@ -40,20 +40,6 @@ public class Program {
         }
     }
 
-    public void updateProgram(){
-        try{
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit/");
-            String sql = "UPDATE program SET Name=? Description=?  WHERE id=?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, Name);
-            stmt.setString(2, Description);
-            stmt.setArray(1, (Array) Jobs);
-            stmt.setArray(1, (Array) ProgramModules);
-        }catch (SQLException e){
-            throw new RuntimeException(e)
-        }
-    }
-
     public void delateProgram(int id) {
 
         try {
@@ -61,7 +47,7 @@ public class Program {
             String sql = "DELETE FROM program WHERE id=?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -69,16 +55,18 @@ public class Program {
 
     public void AddModule() {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
-            String sql = "INSERT INTO module (Name, Description) VALUES(?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, Name);
-            stmt.setString(2, Description);
-            stmt.executeUpdate();
+        for (Module i: Modules) {
+                try {
+                    conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+                    String sql = "INSERT INTO module (Name, Description) VALUES(?, ?)";
+                    stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, Name);
+                    stmt.setString(2, Description);
+                    stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
         }
     }
 
@@ -96,4 +84,3 @@ public class Program {
     }
 
 }
-
