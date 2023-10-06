@@ -44,7 +44,8 @@ public class User {
 
     public static void AddUser(String email, String password, String firstName, String lastName, boolean isJobSeeker, Date dateOfBirth){
 
-        Connection Conn = null;
+        Connection Conn = ConnectionBDD.ConnectionBDD();
+
         PreparedStatement Stmt = null;
 
         try {

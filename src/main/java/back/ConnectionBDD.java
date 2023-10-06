@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ConnectionBDD {
 
-    public static void ConnectionBDD(){
+    public static Connection ConnectionBDD(){
 
         Connection Conn = null;
 
@@ -19,6 +19,8 @@ public class ConnectionBDD {
             System.out.println("SQLState : " + ex.getSQLState());
             System.out.println("VendorError : " + ex.getErrorCode());
         }
+
+        return Conn;
 
     }
 
