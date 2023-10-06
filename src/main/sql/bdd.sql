@@ -1,12 +1,16 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS program;
-DROP TABLE IF EXISTS userprogram;
-DROP TABLE IF EXISTS module;
-DROP TABLE IF EXISTS programmodule;
-DROP TABLE IF EXISTS lesson;
-DROP TABLE IF EXISTS modulelesson;
+DROP DATABASE IF EXISTS learnIt;
+CREATE DATABASE learnIt;
 
-CREATE TABLE `user` (
+
+DROP TABLE IF EXISTS `learnit`.`user`;
+DROP TABLE IF EXISTS `learnit`.`program`;
+DROP TABLE IF EXISTS `learnit`.`userprogram`;
+DROP TABLE IF EXISTS `learnit`.`module`;
+DROP TABLE IF EXISTS `learnit`.`programmodule`;
+DROP TABLE IF EXISTS `learnit`.`lesson`;
+DROP TABLE IF EXISTS `learnit`.`modulelesson`;
+
+CREATE TABLE `learnit`.`user` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `Email` VARCHAR(150) NOT NULL ,
     `Password` VARCHAR(255) NOT NULL ,
@@ -19,14 +23,14 @@ CREATE TABLE `user` (
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
 
-CREATE TABLE `program` (
+CREATE TABLE `learnit`.`program` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `Name` VARCHAR(50) NOT NULL ,
     `Description` VARCHAR(255) NOT NULL ,
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
 
-CREATE TABLE `userprogram` (
+CREATE TABLE `learnit`.`userprogram` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `UserId` BIGINT NOT NULL ,
     `ProgramID` BIGINT NOT NULL ,
@@ -35,43 +39,43 @@ CREATE TABLE `userprogram` (
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
 
-ALTER TABLE `userprogram`
+ALTER TABLE `learnit`.`userprogram`
     ADD CONSTRAINT `UserId` FOREIGN KEY (`UserId`) REFERENCES `user`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE `userprogram`
+ALTER TABLE `learnit`.`userprogram`
     ADD CONSTRAINT `ProgramId` FOREIGN KEY (`ProgramId`) REFERENCES `program`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `module` (
+CREATE TABLE `learnit`.`module` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `Name` VARCHAR(50) NOT NULL ,
     `Description` VARCHAR(255) NOT NULL ,
     PRIMARY KEY (`Id`)) ENGINE = InnoDB;
 
-CREATE TABLE `programmodule` (
+CREATE TABLE `learnit`.`programmodule` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `ProgramId` BIGINT NOT NULL ,
     `ModuleId` BIGINT NOT NULL ,
     PRIMARY KEY (`Id`)) ENGINE = InnoDB;
 
-ALTER TABLE `programmodule`
+ALTER TABLE `learnit`.`programmodule`
 ADD CONSTRAINT `Program_Id` FOREIGN KEY (`ProgramId`) REFERENCES `program`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `programmodule`
+ALTER TABLE `learnit`.`programmodule`
 ADD CONSTRAINT `ModuleId` FOREIGN KEY (`ModuleId`) REFERENCES `module`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE TABLE `lesson` (
+CREATE TABLE `learnit`.`lesson` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `Name` VARCHAR(50) NOT NULL ,
     `Description` VARCHAR(255) NOT NULL ,
     PRIMARY KEY (`Id`)) ENGINE = InnoDB;
 
-CREATE TABLE `modulelesson` (
+CREATE TABLE `learnit`.`modulelesson` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
     `ModuleId` BIGINT NOT NULL ,
     `LessonId` BIGINT NOT NULL ,
     PRIMARY KEY (`Id`)) ENGINE = InnoDB;
 
-ALTER TABLE `modulelesson`
+ALTER TABLE `learnit`.`modulelesson`
 ADD CONSTRAINT `Module_Id` FOREIGN KEY (`ModuleId`) REFERENCES `module`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `modulelesson`
+ALTER TABLE `learnit`.`modulelesson`
 ADD CONSTRAINT `LessonId` FOREIGN KEY (`LessonId`) REFERENCES `lesson`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
