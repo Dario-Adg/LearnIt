@@ -8,4 +8,20 @@ public class Lesson {
         this.Name = name;
         this.Description = description;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
