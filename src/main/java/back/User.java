@@ -182,7 +182,7 @@ public class User {
 
         PreparedStatement Stmt = null;
 
-        DateFormat Df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat Df = new SimpleDateFormat("ddMMyyyy");
         Date Date = null;
 
         try {
