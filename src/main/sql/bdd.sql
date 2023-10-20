@@ -35,6 +35,7 @@ CREATE TABLE `learnit`.`userprogram` (
     `ProgramId` BIGINT NOT NULL ,
     `IsValid` BOOLEAN NOT NULL ,
     `StartDateProgram` DATE NOT NULL ,
+    `EndDateProgram` DATE NULL ,
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
 
