@@ -35,6 +35,78 @@ public class User {
         this.DateOfBirth = dateOfBirth;
     }
 
+    public String getFirstName() {
+        return this.FirstName;
+    }
+
+    public void setName(String firstName) {
+        this.FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.LastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.LastName = lastName;
+    }
+
+    public String getEmail() {
+        return this.Email;
+    }
+
+    public void setEmail(String email) {
+        this.Email = email;
+    }
+
+    public String getPassword() {
+        return this.Password;
+    }
+
+    public void setPassword(String password) {
+        this.Password = password;
+    }
+
+    public boolean getIsAdmin() {
+        return this.IsAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.IsAdmin = isAdmin;
+    }
+
+    public boolean getIsJobSeeker() {
+        return this.IsJobSeeker;
+    }
+
+    public void setIsJobSeeker(boolean isJobSeeker) {
+        this.IsJobSeeker = isJobSeeker;
+    }
+
+    public Integer getDiplomaNumber() {
+        return this.DiplomaNumber;
+    }
+
+    public void setDiplomaNumber(int diplomaNumber) {
+        this.DiplomaNumber = diplomaNumber;
+    }
+
+    public List<UserProgram> getUserPrograms() {
+        return this.UserPrograms;
+    }
+
+    public void setUserPrograms(List<UserProgram> userPrograms) {
+        this.UserPrograms = userPrograms;
+    }
+
+    public Date getDateOfBirth() {
+        return this.DateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.DateOfBirth = dateOfBirth;
+    }
+
     public static ArrayList<HashMap> allUsers(){
 
         Connection Conn = ConnectionBDD.ConnectionBDD();
