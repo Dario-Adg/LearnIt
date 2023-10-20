@@ -10,20 +10,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class User {
-    public int Id;
-    public String FirstName;
-    public String LastName;
-    public String Email;
-    public String Password;
-    public boolean IsAdmin;
-    public boolean IsJobSeeker;
-    public int DiplomaNumber;
-    public List<UserProgram> UserPrograms;
+    private int Id;
+    private String FirstName;
+    private String LastName;
+    private String Email;
+    private String Password;
+    private boolean IsAdmin;
+    private boolean IsJobSeeker;
+    private int DiplomaNumber;
+    private List<UserProgram> UserPrograms;
+    private Date DateOfBirth;
 
-    public Date DateOfBirth;
-
-    public User (String firstName, String lastName, String email, String password, boolean isAdmin,
+    public User (int id, String firstName, String lastName, String email, String password, boolean isAdmin,
                  boolean isJobSeeker, int DiplomaNumber, List<UserProgram> userPrograms, Date dateOfBirth){
+
+        this.Id = id;
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Email = email;
@@ -34,75 +35,63 @@ public class User {
         this.UserPrograms = userPrograms;
         this.DateOfBirth = dateOfBirth;
     }
-
+    public int getId() {
+        return this.Id;
+    }
+    public void setId(Integer id) {
+        this.Id = id;
+    }
     public String getFirstName() {
         return this.FirstName;
     }
-
-    public void setName(String firstName) {
+    public void setFirstName(String firstName) {
         this.FirstName = firstName;
     }
-
     public String getLastName() {
         return this.LastName;
     }
-
     public void setLastName(String lastName) {
         this.LastName = lastName;
     }
-
     public String getEmail() {
         return this.Email;
     }
-
     public void setEmail(String email) {
         this.Email = email;
     }
-
     public String getPassword() {
         return this.Password;
     }
-
     public void setPassword(String password) {
         this.Password = password;
     }
-
     public boolean getIsAdmin() {
         return this.IsAdmin;
     }
-
     public void setIsAdmin(boolean isAdmin) {
         this.IsAdmin = isAdmin;
     }
-
     public boolean getIsJobSeeker() {
         return this.IsJobSeeker;
     }
-
     public void setIsJobSeeker(boolean isJobSeeker) {
         this.IsJobSeeker = isJobSeeker;
     }
-
     public Integer getDiplomaNumber() {
         return this.DiplomaNumber;
     }
-
     public void setDiplomaNumber(int diplomaNumber) {
         this.DiplomaNumber = diplomaNumber;
     }
-
     public List<UserProgram> getUserPrograms() {
         return this.UserPrograms;
     }
-
     public void setUserPrograms(List<UserProgram> userPrograms) {
         this.UserPrograms = userPrograms;
     }
-
     public Date getDateOfBirth() {
         return this.DateOfBirth;
     }
-
     public void setDateOfBirth(Date dateOfBirth) {
         this.DateOfBirth = dateOfBirth;
     }
