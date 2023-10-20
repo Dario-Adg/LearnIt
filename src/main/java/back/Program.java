@@ -1,6 +1,8 @@
 package back;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Program {
@@ -11,6 +13,9 @@ public class Program {
     public Connection conn = null;
     public PreparedStatement stmt = null;
 
+    public ResultSet rs = null;
+
+
 
     public Program (String name, String description, List<Job> jobs, List<ProgramModule> programModules){
         this.Name = name;
@@ -20,6 +25,46 @@ public class Program {
     }
 
     public void isAdmin(){
+
+    }
+
+    public ArrayList<HashMap<String, Object>> SelectModule(String id) {
+        ArrayList<HashMap<String, Object>> Arguments = new ArrayList<>();
+
+        try{
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            String sql ="SELECT (Name, Description) FROM `module` WHERE Id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, id);
+
+            rs = stmt.executeQuery(sql);
+
+            while(rs.next()){
+                System.out.println("---------------------------------------------------");
+
+                HashMap<String, Object> argument = new HashMap<>();
+
+                //int moduleId = rs.getInt("Id");
+                String Nameid = rs.getString("Name");
+                String Descriptionid = rs.getString("Description");
+
+                //argument.put("Id", moduleId);
+                argument.put("Nom", Nameid);
+                argument.put("Description", Descriptionid);
+
+                Arguments.add(argument);
+
+
+                System.out.println("---------------------------------------------------");
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }finally {
+        // Close resources (stmt, conn, rs) in a finally block here
+        // This is important to release database resources properly
+        // and handle exceptions when closing resources.
+        }
+        return Arguments;
 
     }
 

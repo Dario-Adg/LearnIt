@@ -10,14 +10,17 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        List<Module> modules;
-        //modules = new List<Module>();
+
+        List module = new ArrayList();
+        module.add("First Module");
+
+        List lesson = new ArrayList();
+        lesson.add("First Lesson");
+
+        Program program1 = new  Program("dhdfg", "sgfdfgdrgf", module, lesson);
 
 
-
-
-
-        //Program program = new Program("1", "Denys", , "pas de description");
+        System.out.println(program1.SelectModule("2"));
 
     }
 }

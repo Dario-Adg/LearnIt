@@ -1,9 +1,8 @@
 package back;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+
+import java.sql.*;
 import java.util.List;
 
 public class Module {
@@ -34,7 +33,7 @@ public class Module {
             String sql = "INSERT INTO module (Name, Lessons) VALUES(?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, Name);
-            //stmt.setArray(2, (Array) Lessons);
+            stmt.setArray(2, (Array) Lessons);
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -54,4 +53,9 @@ public class Module {
             throw new RuntimeException(e);
         }
     }
+
+
+
+
+
 }
