@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS `learnit`.`module`;
 DROP TABLE IF EXISTS `learnit`.`programmodule`;
 DROP TABLE IF EXISTS `learnit`.`lesson`;
 DROP TABLE IF EXISTS `learnit`.`modulelesson`;
+DROP TABLE IF EXISTS `learnit`.`noteModule`;
 
 CREATE TABLE `learnit`.`user` (
     `Id` BIGINT NOT NULL AUTO_INCREMENT ,
