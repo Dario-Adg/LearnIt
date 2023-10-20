@@ -19,7 +19,6 @@ public class User {
     public boolean IsJobSeeker;
     public int DiplomaNumber;
     public List<UserProgram> UserPrograms;
-
     public Date DateOfBirth;
 
     public User (String firstName, String lastName, String email, String password, boolean isAdmin,
@@ -107,7 +106,7 @@ public class User {
         this.DateOfBirth = dateOfBirth;
     }
 
-    public static ArrayList<HashMap> allUsers(){
+    public static ArrayList<HashMap> GetAllUsers(){
 
         Connection Conn = ConnectionBDD.ConnectionBDD();
 
@@ -116,17 +115,6 @@ public class User {
         ResultSet Rs = null;
 
         ArrayList<HashMap> users = new ArrayList<>();
-
-        /*
-        DateFormat Df = new SimpleDateFormat("yyyy-MM-dd");
-        Date Date = null;
-
-        try {
-            Date = Df.parse(dateOfBirth);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        */
 
         try {
             Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
@@ -145,8 +133,6 @@ public class User {
                 boolean isJobSeeker = Rs.getBoolean("IsJobSeeker");
                 java.sql.Date dateOfBirth = Rs.getDate("DateOfBirth");
 
-                //Convertir java.sql.Date en java.util.Date
-
                 Integer diplomaNumber = Rs.getInt("DiplomaNumber");
 
                 HashMap user = new HashMap();
@@ -159,9 +145,7 @@ public class User {
                 user.put("IsJobSeeker", isJobSeeker);
                 user.put("DateOfBirth", dateOfBirth);
 
-
                 users.add(user);
-
             }
 
         } catch (SQLException ex) {
@@ -172,7 +156,6 @@ public class User {
         }
 
         return users;
-
     }
 
     public static void AddUser(String email, String password, String firstName, String lastName, boolean isJobSeeker,
@@ -181,15 +164,6 @@ public class User {
         Connection Conn = ConnectionBDD.ConnectionBDD();
 
         PreparedStatement Stmt = null;
-
-        DateFormat Df = new SimpleDateFormat("ddMMyyyy");
-        Date Date = null;
-
-        try {
-            Date = Df.parse(dateOfBirth);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
 
         try {
             Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
@@ -202,7 +176,7 @@ public class User {
             Stmt.setString(4, lastName);
             Stmt.setBoolean(5, false);
             Stmt.setBoolean(6, isJobSeeker);
-            Stmt.setDate(7, new java.sql.Date(Date.getTime()));
+            Stmt.setDate(7, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
 
             Stmt.executeUpdate();
 
@@ -217,7 +191,6 @@ public class User {
             System.out.println("SQLState : " + ex.getSQLState());
             System.out.println("VendorError : " + ex.getErrorCode());
         }
-
     }
 
     public static void UpdateUserAsAdmin(String email, String password, String firstName, String lastName, boolean isAdmin,
@@ -226,15 +199,6 @@ public class User {
         Connection Conn = ConnectionBDD.ConnectionBDD();
 
         PreparedStatement Stmt = null;
-
-        DateFormat Df = new SimpleDateFormat("yyyy-MM-dd");
-        Date Date = null;
-
-        try {
-            Date = Df.parse(dateOfBirth);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
 
         try {
             Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
@@ -247,7 +211,7 @@ public class User {
             Stmt.setString(4, lastName);
             Stmt.setBoolean(5, isAdmin);
             Stmt.setBoolean(6, isJobSeeker);
-            Stmt.setDate(7, new java.sql.Date(Date.getTime()));
+            Stmt.setDate(7, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
             Stmt.setInt(8, diplomaNumber);
             Stmt.setInt(9, id);
 
@@ -267,20 +231,12 @@ public class User {
 
     }
 
-    public static void UpdateUserAsUser(String email, String password, String firstName, String lastName, String dateOfBirth, Integer diplomaNumber, Integer id){
+    public static void UpdateUserAsUser(String email, String password, String firstName, String lastName,
+                                        String dateOfBirth, Integer diplomaNumber, Integer id){
 
         Connection Conn = ConnectionBDD.ConnectionBDD();
 
         PreparedStatement Stmt = null;
-
-        DateFormat Df = new SimpleDateFormat("yyyy-MM-dd");
-        Date Date = null;
-
-        try {
-            Date = Df.parse(dateOfBirth);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
 
         try {
             Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
@@ -291,7 +247,7 @@ public class User {
             Stmt.setString(2, password);
             Stmt.setString(3, firstName);
             Stmt.setString(4, lastName);
-            Stmt.setDate(5, new java.sql.Date(Date.getTime()));
+            Stmt.setDate(5, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
             Stmt.setInt(6, diplomaNumber);
             Stmt.setInt(7, id);
 
@@ -337,7 +293,17 @@ public class User {
             System.out.println("SQLState : " + ex.getSQLState());
             System.out.println("VendorError : " + ex.getErrorCode());
         }
-
     }
 
+    private static Date EncodeStringDateToDate(String stringDate){
+        DateFormat Df = new SimpleDateFormat("ddMMyyyy");
+        Date date = null;
+
+        try {
+            date = Df.parse(stringDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return date;
+    }
 }
