@@ -34,8 +34,7 @@ CREATE TABLE `learnit`.`userprogram` (
     `UserId` BIGINT NOT NULL ,
     `ProgramId` BIGINT NOT NULL ,
     `IsValid` BOOLEAN NOT NULL ,
-    `StartDateProgram` DATE NOT NULL ,
-    `EndDateProgram` DATE NULL ,
+    `EndDateProgram` DATE NOT NULL ,
     PRIMARY KEY (`Id`))
     ENGINE = InnoDB;
 
@@ -79,3 +78,17 @@ ADD CONSTRAINT `Module_Id` FOREIGN KEY (`ModuleId`) REFERENCES `module`(`Id`) ON
 
 ALTER TABLE `learnit`.`modulelesson`
 ADD CONSTRAINT `LessonId` FOREIGN KEY (`LessonId`) REFERENCES `lesson`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `learnit`.`noteModule` (
+    `Id` BIGINT NOT NULL AUTO_INCREMENT ,
+    `UserId` BIGINT NOT NULL ,
+    `ModuleId` BIGINT NOT NULL ,
+    `Note` INT(10) NULL ,
+    `IsValid` INT NOT NULL ,
+    PRIMARY KEY (id)) ENGINE = InnoDB;
+
+ALTER TABLE `learnit`.`noteModule`
+ADD CONSTRAINT `NoteModuleId` FOREIGN KEY (`ModuleId`) REFERENCES `module`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `learnit`.`noteModule`
+ADD CONSTRAINT `NoteUserId` FOREIGN KEY (`UserId`) REFERENCES `user`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;

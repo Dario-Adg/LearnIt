@@ -6,12 +6,12 @@ public class UserProgram {
     public User User;
     public Program Program;
     public boolean IsValid;
-    public Date StartDateProgram;
+    public Date EndDateProgram;
 
-    public UserProgram(User user, Program program, boolean isValid, Date startDateProgram){
+    public UserProgram(User user, Program program, boolean isValid, Date endDateProgram){
         this.User = user;
         this.Program = program;
         this.IsValid = isValid;
-        this.StartDateProgram = startDateProgram;
+        this.EndDateProgram = endDateProgram;
     }
 }
