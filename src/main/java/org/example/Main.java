@@ -115,7 +115,7 @@ public class Main {
                     } else {
                         whileContinue = false;
                     }
-                }
+            }
             }else{
                 System.out.println("Merci de renseigner des chiffres");
                 scan.next();
