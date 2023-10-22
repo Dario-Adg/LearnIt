@@ -28,16 +28,16 @@ public class Program {
 
     }
 
-    public ArrayList<HashMap<String, Object>> SelectModule(String id) {
+    public ArrayList<HashMap<String, Object>> SelectModule(int id) {
         ArrayList<HashMap<String, Object>> Arguments = new ArrayList<>();
 
         try{
             conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
-            String sql ="SELECT (Name, Description) FROM `module` WHERE Id = ?";
+            String sql ="SELECT Name, Description FROM `module` WHERE Id = ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, id);
+            stmt.setInt(1, id);
 
-            rs = stmt.executeQuery(sql);
+            rs = stmt.executeQuery();
 
             while(rs.next()){
                 System.out.println("---------------------------------------------------");
