@@ -12,4 +12,20 @@ public class NoteModule {
         this.Note = note;
         this.IsValid = isValid;
     }
+
+    public User getUser() {
+        return this.User;
+    }
+
+    public Module getModule() {
+        return this.Module;
+    }
+
+    public boolean isValid() {
+        return this.IsValid;
+    }
+
+    public int getNote() {
+        return this.Note;
+    }
 }

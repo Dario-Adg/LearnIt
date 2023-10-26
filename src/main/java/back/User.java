@@ -10,19 +10,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class User {
-    public int Id;
-    public String FirstName;
-    public String LastName;
-    public String Email;
-    public String Password;
-    public boolean IsAdmin;
-    public boolean IsJobSeeker;
-    public int DiplomaNumber;
-    public List<UserProgram> UserPrograms;
-    public Date DateOfBirth;
+    private int Id;
+    private String FirstName;
+    private String LastName;
+    private String Email;
+    private String Password;
+    private boolean IsAdmin;
+    private boolean IsJobSeeker;
+    private int DiplomaNumber;
+    private Date DateOfBirth;
+    private final List<UserProgram> UserPrograms = new ArrayList<>();
+    private final List<NoteModule> NoteModules = new ArrayList<>();
 
-    public User (String firstName, String lastName, String email, String password, boolean isAdmin,
-                 boolean isJobSeeker, int DiplomaNumber, List<UserProgram> userPrograms, Date dateOfBirth){
+    public User (int id, String firstName, String lastName, String email, String password, boolean isAdmin,
+                 boolean isJobSeeker, int DiplomaNumber, Date dateOfBirth){
+        this.Id = id;
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Email = email;
@@ -30,110 +32,132 @@ public class User {
         this.IsAdmin = isAdmin;
         this.IsJobSeeker = isJobSeeker;
         this.DiplomaNumber = DiplomaNumber;
-        this.UserPrograms = userPrograms;
         this.DateOfBirth = dateOfBirth;
+    }
+
+    //Getters
+    public int getId() {
+        return this.Id;
     }
 
     public String getFirstName() {
         return this.FirstName;
     }
 
-    public void setName(String firstName) {
-        this.FirstName = firstName;
-    }
-
     public String getLastName() {
         return this.LastName;
     }
 
-    public void setLastName(String lastName) {
-        this.LastName = lastName;
-    }
 
     public String getEmail() {
         return this.Email;
-    }
-
-    public void setEmail(String email) {
-        this.Email = email;
     }
 
     public String getPassword() {
         return this.Password;
     }
 
-    public void setPassword(String password) {
-        this.Password = password;
-    }
-
     public boolean getIsAdmin() {
         return this.IsAdmin;
-    }
-
-    public void setIsAdmin(boolean isAdmin) {
-        this.IsAdmin = isAdmin;
     }
 
     public boolean getIsJobSeeker() {
         return this.IsJobSeeker;
     }
 
-    public void setIsJobSeeker(boolean isJobSeeker) {
-        this.IsJobSeeker = isJobSeeker;
-    }
-
     public Integer getDiplomaNumber() {
         return this.DiplomaNumber;
-    }
-
-    public void setDiplomaNumber(int diplomaNumber) {
-        this.DiplomaNumber = diplomaNumber;
-    }
-
-    public List<UserProgram> getUserPrograms() {
-        return this.UserPrograms;
-    }
-
-    public void setUserPrograms(List<UserProgram> userPrograms) {
-        this.UserPrograms = userPrograms;
     }
 
     public Date getDateOfBirth() {
         return this.DateOfBirth;
     }
 
+    public List<UserProgram> getUserPrograms() {
+        return this.UserPrograms;
+    }
+
+    public List<NoteModule> getNoteModules() {
+        return this.NoteModules;
+    }
+
+    //Setters
+    public void setId(int id) {
+        this.Id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.FirstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.LastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.Email = email;
+    }
+
+    public void setPassword(String password) {
+        this.Password = password;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.IsAdmin = isAdmin;
+    }
+
+    public void setIsJobSeeker(boolean isJobSeeker) {
+        this.IsJobSeeker = isJobSeeker;
+    }
+
+    public void setDiplomaNumber(int diplomaNumber) {
+        this.DiplomaNumber = diplomaNumber;
+    }
+
     public void setDateOfBirth(Date dateOfBirth) {
         this.DateOfBirth = dateOfBirth;
     }
 
+    public void addProgram(Program program, boolean isValid, Date endDateProgram) {
+        UserProgram userProgram = new UserProgram(this, program, isValid, endDateProgram);
+        this.UserPrograms.add(userProgram);
+        program.getProgramUsers().add(userProgram);
+    }
+
+    public void addNoteModule(Module module, int note, boolean isValid) {
+        NoteModule noteModule = new NoteModule(this, module, note, isValid);
+        this.NoteModules.add(noteModule);
+        module.getNoteModules().add(noteModule);
+    }
+
     public static ArrayList<HashMap> GetAllUsers(){
 
-        Connection Conn = ConnectionBDD.ConnectionBDD();
+        Connection conn = ConnectionBDD.ConnectionBDD();
 
-        Statement Stmt = null;
+        Statement stmt = null;
 
-        ResultSet Rs = null;
+        ResultSet rs = null;
 
         ArrayList<HashMap> users = new ArrayList<>();
 
         try {
-            Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
             String SqlQuery = "SELECT * FROM user";
-            Stmt = Conn.createStatement();
-            Rs = Stmt.executeQuery(SqlQuery);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(SqlQuery);
 
             //Nom des Index dans la BDD : `Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsJobSeeker`, `DateOfBirth`, `DiplomaNumber`
-            while(Rs.next()){
-                Integer id = Rs.getInt("Id");
-                String email = Rs.getString("Email");
-                String password = Rs.getString("Password");
-                String firstName = Rs.getString("FirstName");
-                String lastName = Rs.getString("LastName");
-                boolean isAdmin = Rs.getBoolean("IsAdmin");
-                boolean isJobSeeker = Rs.getBoolean("IsJobSeeker");
-                java.sql.Date dateOfBirth = Rs.getDate("DateOfBirth");
+            while(rs.next()){
+                Integer id = rs.getInt("Id");
+                String email = rs.getString("Email");
+                String password = rs.getString("Password");
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                boolean isAdmin = rs.getBoolean("IsAdmin");
+                boolean isJobSeeker = rs.getBoolean("IsJobSeeker");
+                java.sql.Date dateOfBirth = rs.getDate("DateOfBirth");
 
-                Integer diplomaNumber = Rs.getInt("DiplomaNumber");
+                Integer diplomaNumber = rs.getInt("DiplomaNumber");
 
                 HashMap user = new HashMap();
                 user.put("Id", id);
@@ -161,29 +185,27 @@ public class User {
     public static void AddUser(String email, String password, String firstName, String lastName, boolean isJobSeeker,
                                String dateOfBirth){
 
-        Connection Conn = ConnectionBDD.ConnectionBDD();
+        Connection conn = ConnectionBDD.ConnectionBDD();
 
-        PreparedStatement Stmt = null;
+        PreparedStatement stmt = null;
 
         try {
-            Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
             String SqlQuery = "INSERT INTO user (`Email`, `Password`, `FirstName`, `LastName`, `IsAdmin`, `IsJobSeeker`, `DateOfBirth`) VALUES (?,?,?,?,?,?,?)";
 
-            Stmt = Conn.prepareStatement(SqlQuery);
-            Stmt.setString(1, email);
-            Stmt.setString(2, password);
-            Stmt.setString(3, firstName);
-            Stmt.setString(4, lastName);
-            Stmt.setBoolean(5, false);
-            Stmt.setBoolean(6, isJobSeeker);
-            Stmt.setDate(7, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
+            stmt = conn.prepareStatement(SqlQuery);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            stmt.setString(3, firstName);
+            stmt.setString(4, lastName);
+            stmt.setBoolean(5, false);
+            stmt.setBoolean(6, isJobSeeker);
+            stmt.setDate(7, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
 
-            Stmt.executeUpdate();
+            stmt.executeUpdate();
 
             // Fermeture du Statement
-            if(Stmt != null) {
-                Stmt.close();
-            }
+            stmt.close();
 
         } catch (SQLException ex) {
             //Handle any errors
@@ -196,31 +218,29 @@ public class User {
     public static void UpdateUserAsAdmin(String email, String password, String firstName, String lastName, boolean isAdmin,
                                          boolean isJobSeeker, String dateOfBirth, Integer diplomaNumber, Integer id){
 
-        Connection Conn = ConnectionBDD.ConnectionBDD();
+        Connection conn = ConnectionBDD.ConnectionBDD();
 
-        PreparedStatement Stmt = null;
+        PreparedStatement stmt = null;
 
         try {
-            Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
             String SqlQuery = "UPDATE user SET `Email` = ?, `Password` = ?, `FirstName` = ?, `LastName` = ?, `IsAdmin` = ?, `IsJobSeeker` = ?, `DateOfBirth` = ?, `DiplomaNumber` = ? WHERE `id` = ?";
 
-            Stmt = Conn.prepareStatement(SqlQuery);
-            Stmt.setString(1, email);
-            Stmt.setString(2, password);
-            Stmt.setString(3, firstName);
-            Stmt.setString(4, lastName);
-            Stmt.setBoolean(5, isAdmin);
-            Stmt.setBoolean(6, isJobSeeker);
-            Stmt.setDate(7, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
-            Stmt.setInt(8, diplomaNumber);
-            Stmt.setInt(9, id);
+            stmt = conn.prepareStatement(SqlQuery);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            stmt.setString(3, firstName);
+            stmt.setString(4, lastName);
+            stmt.setBoolean(5, isAdmin);
+            stmt.setBoolean(6, isJobSeeker);
+            stmt.setDate(7, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
+            stmt.setInt(8, diplomaNumber);
+            stmt.setInt(9, id);
 
-            Stmt.executeUpdate();
+            stmt.executeUpdate();
 
             // Fermeture du Statement
-            if(Stmt != null) {
-                Stmt.close();
-            }
+            stmt.close();
 
         } catch (SQLException ex) {
             //Handle any errors
@@ -234,29 +254,27 @@ public class User {
     public static void UpdateUserAsUser(String email, String password, String firstName, String lastName,
                                         String dateOfBirth, Integer diplomaNumber, Integer id){
 
-        Connection Conn = ConnectionBDD.ConnectionBDD();
+        Connection conn = ConnectionBDD.ConnectionBDD();
 
-        PreparedStatement Stmt = null;
+        PreparedStatement stmt = null;
 
         try {
-            Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
             String SqlQuery = "UPDATE user SET `Email` = ?, `Password` = ?, `FirstName` = ?, `LastName` = ?, `IsAdmin` = ?, `IsJobSeeker` = ?, `DateOfBirth` = ?, `DiplomaNumber` = ? WHERE `id` = ?";
 
-            Stmt = Conn.prepareStatement(SqlQuery);
-            Stmt.setString(1, email);
-            Stmt.setString(2, password);
-            Stmt.setString(3, firstName);
-            Stmt.setString(4, lastName);
-            Stmt.setDate(5, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
-            Stmt.setInt(6, diplomaNumber);
-            Stmt.setInt(7, id);
+            stmt = conn.prepareStatement(SqlQuery);
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+            stmt.setString(3, firstName);
+            stmt.setString(4, lastName);
+            stmt.setDate(5, new java.sql.Date(EncodeStringDateToDate(dateOfBirth).getTime()));
+            stmt.setInt(6, diplomaNumber);
+            stmt.setInt(7, id);
 
-            Stmt.executeUpdate();
+            stmt.executeUpdate();
 
             // Fermeture du Statement
-            if(Stmt != null) {
-                Stmt.close();
-            }
+            stmt.close();
 
         } catch (SQLException ex) {
             //Handle any errors
@@ -269,23 +287,21 @@ public class User {
 
     public static void DeleteUser(Integer id){
 
-        Connection Conn = ConnectionBDD.ConnectionBDD();
+        Connection conn = ConnectionBDD.ConnectionBDD();
 
-        PreparedStatement Stmt = null;
+        PreparedStatement stmt = null;
 
         try {
-            Conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/learnit", "root", "");
             String SqlQuery = "DELETE FROM user WHERE Id=?";
 
-            Stmt = Conn.prepareStatement(SqlQuery);
-            Stmt.setInt(1, id);
+            stmt = conn.prepareStatement(SqlQuery);
+            stmt.setInt(1, id);
 
-            Stmt.executeUpdate();
+            stmt.executeUpdate();
 
             // Fermeture du Statement
-            if(Stmt != null) {
-                Stmt.close();
-            }
+            stmt.close();
 
         } catch (SQLException ex) {
             //Handle any errors
@@ -296,11 +312,11 @@ public class User {
     }
 
     private static Date EncodeStringDateToDate(String stringDate){
-        DateFormat Df = new SimpleDateFormat("ddMMyyyy");
+        DateFormat df = new SimpleDateFormat("ddMMyyyy");
         Date date = null;
 
         try {
-            date = Df.parse(stringDate);
+            date = df.parse(stringDate);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
