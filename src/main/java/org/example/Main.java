@@ -1,12 +1,19 @@
 package org.example;
 
-import back.User;
+import dataBaseSQL.*;
 
 import java.util.Scanner;
 
+import static org.example.Admin.MenuAdmin;
+import static org.example.User.MenuUser;
+
 public class Main {
     public static void main(String[] args) {
+        MenuLoginInscription();
 
+    }
+
+    public static void MenuLoginInscription(){
         Scanner scan = new Scanner(System.in);
         int choix;
         do {
@@ -20,10 +27,11 @@ public class Main {
             switch (choix) {
                 case 1 -> LogIn();
                 case 2 -> Inscription();
-                case 3 -> System.out.println("Fin");
+                case 3 -> System.out.println("A bientôt");
                 default -> System.out.println("Le choix n'est pas valide");
             }
         } while (choix != 3);
+        System.exit(0);
     }
 
     public static void LogIn(){
@@ -33,19 +41,26 @@ public class Main {
         System.out.println("Renseignez votre mot de passe");
         String password = scan.nextLine();
 
-        //User.LogIn(login, password);
+        var user = UserSQL.authenticateUser(login, password);
+        if (user == null){
+            System.out.println("Erreur aucun utilisateur avec cette email ou mot de passe");
+        } else if (user.getIsAdmin()){
+            MenuAdmin();
+        } else{
+            MenuUser();
+        }
     }
 
     public static void Inscription(){
         Scanner scan = new Scanner(System.in);
-        System.out.println("Renseignez votre login");
-        String login = scan.nextLine();
+        System.out.println("Renseignez votre email");
+        String email = scan.nextLine();
         System.out.println("Renseignez votre mot de passe");
         String password = scan.nextLine();
         System.out.println("Renseignez votre prenom");
         String firstName = scan.nextLine();
         System.out.println("Renseignez votre nom");
-        String lastName = scan.nextLine();
+        String lastName = scan.nextLine().toUpperCase();
         String dayOfBirth = whileForDateOfBirth(scan, "Renseignez votre jour de naissance", false, false);
         String monthOfBirth = whileForDateOfBirth(scan, "Renseignez votre mois de naissance", true, false);
         String yearOfBirth = whileForDateOfBirth(scan, "Renseignez votre année de naissance",false, true);
@@ -77,8 +92,7 @@ public class Main {
             }
         } while (whileContinue);
 
-        User.AddUser(login, password, firstName, lastName, isJobSeeker, dateOfBirth);
-        System.out.println("Utilisateur créer avec succès");
+        UserSQL.AddUser(email, password, firstName, lastName, isJobSeeker, dateOfBirth);
     }
 
     private static String whileForDateOfBirth(Scanner scan, String firstSentence,boolean isMonth, boolean isYear){

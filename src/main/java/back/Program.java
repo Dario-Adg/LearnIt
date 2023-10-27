@@ -56,7 +56,11 @@ public class Program {
     }
 
     public void addJob(Job job) {
-        this.Jobs.add(job);
+        Jobs.add(job);
+    }
+
+    public void removeJob(Job job) {
+        Jobs.remove(job);
     }
 
     public void addModule(Module module) {

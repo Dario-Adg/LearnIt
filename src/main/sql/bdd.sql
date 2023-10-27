@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS `learnit`.`note_module`;
 
 CREATE TABLE `learnit`.`user` (
     `Id` INT AUTO_INCREMENT PRIMARY KEY ,
-    `Email` VARCHAR(150) NOT NULL ,
+    `Email` VARCHAR(150) NOT NULL UNIQUE ,
     `Password` VARCHAR(255) NOT NULL ,
     `FirstName` VARCHAR(75) NOT NULL ,
     `LastName` VARCHAR(75) NOT NULL ,
