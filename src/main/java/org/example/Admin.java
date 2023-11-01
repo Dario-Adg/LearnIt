@@ -1,7 +1,12 @@
 package org.example;
 
+import back.UserProgram;
 import dataBaseSQL.UserSQL;
+import back.User;
 
+import java.text.SimpleDateFormat;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import static org.example.Main.MenuLoginInscription;
@@ -10,40 +15,26 @@ import static org.example.User.MenuUser;
 public class Admin {
     public static void MenuAdmin(){
         Scanner scan = new Scanner(System.in);
-        int choix;
+        int choice;
         do {
             System.out.println("--------MENU ADMIN--------");
-            System.out.println("1. Liste ");
-            System.out.println("2. Ajout ");
-            System.out.println("3. Modification ");
-            System.out.println("4. Déconnexion");
-            System.out.println("--------------------------");
-            choix = scan.nextInt();
-
-            switch (choix) {
-                case 1 -> MenuAdminList();
-                case 2 -> MenuAdminAdd();
-                case 3 -> MenuAdminUpdate();
-                case 4 -> MenuLoginInscription();
-                default -> System.out.println("Le choix n'est pas valide");
-            }
-        } while (choix != 4);
-    }
-
-    public static void MenuAdminList(){
-        Scanner scan = new Scanner(System.in);
-        int choix;
-        do {
-            System.out.println("--------MENU LISTE--------");
             System.out.println("1. Utilisateurs");
             System.out.println("2. Parcours ");
             System.out.println("3. Modules ");
             System.out.println("4. Cours");
             System.out.println("5. Sortir");
             System.out.println("--------------------------");
-            choix = scan.nextInt();
+            try {
+                choice = scan.nextInt();
+            } catch (InputMismatchException e) {
+                // Gérer une entrée non numérique
+                System.out.println("Veuillez entrer un chiffre.");
+                scan.nextLine(); // Nettoyer le tampon d'entrée
+                choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                continue;
+            }
 
-            switch (choix) {
+            switch (choice) {
                 case 1 -> GetUsers();
                 case 2 -> GetPrograms();
                 case 3 -> GetModules();
@@ -51,57 +42,112 @@ public class Admin {
                 case 5 -> MenuAdmin();
                 default -> System.out.println("Le choix n'est pas valide");
             }
-        } while (choix != 5);
-    }
-
-    public static void MenuAdminAdd(){
-        Scanner scan = new Scanner(System.in);
-        int choix;
-        do {
-            System.out.println("--------MENU AJOUT--------");
-            System.out.println("1. Parcours ");
-            System.out.println("2. Module ");
-            System.out.println("3. Cours ");
-            System.out.println("4. Sortir");
-            System.out.println("--------------------------");
-            choix = scan.nextInt();
-
-            switch (choix) {
-                case 1 -> AddProgram();
-                case 2 -> AddModule();
-                case 3 -> AddLesson();
-                case 4 -> MenuAdmin();
-                default -> System.out.println("Le choix n'est pas valide");
-            }
-        } while (choix != 4);
-    }
-
-    public static void MenuAdminUpdate(){
-        Scanner scan = new Scanner(System.in);
-        int choix;
-        do {
-            System.out.println("-----MENU MODIFICATION-----");
-            System.out.println("1. User ");
-            System.out.println("2. Parcours ");
-            System.out.println("3. Module ");
-            System.out.println("4. Cours");
-            System.out.println("5. Sortir");
-            System.out.println("---------------------------");
-            choix = scan.nextInt();
-
-            switch (choix) {
-                case 1 -> UpdateUser();
-                case 2 -> UpdateProgram();
-                case 3 -> UpdateModule();
-                case 4 -> UpdateLesson();
-                case 5 -> MenuAdmin();
-                default -> System.out.println("Le choix n'est pas valide");
-            }
-        } while (choix != 5);
+        } while (choice != 5);
     }
 
     public static void GetUsers(){
-        Scanner scan = new Scanner(System.in);
+        List<User> users = UserSQL.GetUsers();
+        if (users.isEmpty()){
+            System.out.println("Aucun utilisateur");
+        } else {
+            for (User user: users) {
+                System.out.println("Id : " + user.getId());
+                System.out.println("Prénom : " + user.getFirstName());
+                System.out.println("Nom : " + user.getLastName());
+                System.out.println("---------------------------------");
+            }
+            Scanner scan = new Scanner(System.in);
+            int choice;
+            do {
+                System.out.println("Souhaitez-vous sélectionner un utilisateur ?");
+                System.out.println("1. Oui ");
+                System.out.println("2. Non ");
+                try {
+                    choice = scan.nextInt();
+                } catch (InputMismatchException e) {
+                    // Gérer une entrée non numérique
+                    System.out.println("Veuillez entrer un chiffre.");
+                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                    choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                    continue;
+                }
+                switch (choice) {
+                    case 1 -> {
+                        int userId;
+                        do{
+                            System.out.println("Indiquer l'Id de l'utilisateur souhaité");
+                            try {
+                                userId = scan.nextInt();
+                            } catch (InputMismatchException e) {
+                                // Gérer une entrée non numérique
+                                System.out.println("Veuillez entrer un chiffre.");
+                                scan.nextLine(); // Nettoyer le tampon d'entrée
+                                userId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                continue;
+                            }
+                            User user = UserSQL.GetUserByIdWithProgram(userId);
+                            if (user != null){
+                                System.out.println("Id : " + user.getId());
+                                System.out.println("Prénom : " + user.getFirstName());
+                                System.out.println("Nom : " + user.getLastName());
+                                System.out.println("Date de naissance : " +
+                                        new SimpleDateFormat("dd-MM-yyyy").format(user.getDateOfBirth()));
+                                System.out.println("Chercheur d'emplois : " + (user.getIsJobSeeker() ? "Oui" : "Non"));
+                                System.out.println(user.getDiplomaNumber() != 0 ?
+                                        "Numéro diplôme : " + user.getDiplomaNumber() : "Pas encore de numéro de diplôme");
+                                List<UserProgram> userPrograms = user.getUserPrograms();
+                                if (!userPrograms.isEmpty()){
+                                    System.out.println("Parcours suivi par " + user.getFirstNameLastName());
+                                    for (UserProgram userProgram: userPrograms) {
+                                        System.out.println("**");
+                                        System.out.println("Id du parcours : " + userProgram.getProgram().getId());
+                                        System.out.println("Nom du parcours : " + userProgram.getProgram().getName());
+                                        System.out.println("Description du parcours : " +
+                                                userProgram.getProgram().getDescription());
+                                        boolean programValid = userProgram.isValid();
+                                        System.out.println(programValid ? "Parcours validé" : "Parcours en cours");
+                                        System.out.println(programValid ? "Parcours terminé" :
+                                                "Fin limite du parcours : " + userProgram.getEndDateProgram());
+                                        System.out.println("**");
+                                    }
+                                } else {
+                                    System.out.println("Aucun parcours suivi par " + user.getFirstNameLastName());
+                                }
+                                System.out.println("---------------------------------");
+                                int choiceForAdmin;
+                                do {
+                                    System.out.println("Souhaitez-vous passer admin " + user.getFirstNameLastName() + " ?");
+                                    System.out.println("1. Oui ");
+                                    System.out.println("2. Non ");
+                                    try {
+                                        choiceForAdmin = scan.nextInt();
+                                    } catch (InputMismatchException e) {
+                                        // Gérer une entrée non numérique
+                                        System.out.println("Veuillez entrer un chiffre.");
+                                        scan.nextLine(); // Nettoyer le tampon d'entrée
+                                        choiceForAdmin = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                        continue;
+                                    }
+                                    switch (choiceForAdmin){
+                                        case 1 -> {
+                                            UserSQL.UpdateUserToAdmin(userId);
+                                            MenuAdmin();
+                                        }
+                                        case 2 -> MenuAdmin();
+                                        default -> System.out.println("Le choix n'est pas valide");
+                                    }
+                                } while (choiceForAdmin != 2);
+                            } else {
+                                System.out.println("L'utilisateur n'existe pas");
+                                break;
+                            }
+                        } while (userId != 0);
+                    }
+                    case 2 -> MenuAdmin();
+                    default -> System.out.println("Le choix n'est pas valide");
+                }
+            } while (choice != 2);
+        }
     }
     public static void GetPrograms(){
         Scanner scan = new Scanner(System.in);
@@ -111,8 +157,8 @@ public class Admin {
     }
     public static void GetLessons(){
         Scanner scan = new Scanner(System.in);
-
     }
+
     public static void AddProgram(){
         Scanner scan = new Scanner(System.in);
 
@@ -125,6 +171,7 @@ public class Admin {
         Scanner scan = new Scanner(System.in);
 
     }
+
     public static void UpdateUser(){
         Scanner scan = new Scanner(System.in);
 

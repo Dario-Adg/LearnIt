@@ -20,6 +20,17 @@ public class Helper {
         }
         return date;
     }
+    public static Date DecodeDateToString(String stringDate){
+        DateFormat df = new SimpleDateFormat("ddMMyyyy");
+        Date date = null;
+
+        try {
+            date = df.parse(stringDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return date;
+    }
 
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");

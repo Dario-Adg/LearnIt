@@ -1,7 +1,9 @@
 package org.example;
 
 import dataBaseSQL.*;
+import back.User;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static org.example.Admin.MenuAdmin;
@@ -10,27 +12,34 @@ import static org.example.User.MenuUser;
 public class Main {
     public static void main(String[] args) {
         MenuLoginInscription();
-
     }
 
     public static void MenuLoginInscription(){
         Scanner scan = new Scanner(System.in);
-        int choix;
+        int choice;
         do {
             System.out.println("-----------MENU-----------");
             System.out.println("1. Connexion ");
             System.out.println("2. Inscription");
             System.out.println("3. Quitter");
             System.out.println("--------------------------");
-            choix = scan.nextInt();
+            try {
+                choice = scan.nextInt();
+            } catch (InputMismatchException e) {
+                // Gérer une entrée non numérique
+                System.out.println("Veuillez entrer un chiffre.");
+                scan.nextLine(); // Nettoyer le tampon d'entrée
+                choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                continue;
+            }
 
-            switch (choix) {
+            switch (choice) {
                 case 1 -> LogIn();
                 case 2 -> Inscription();
                 case 3 -> System.out.println("A bientôt");
                 default -> System.out.println("Le choix n'est pas valide");
             }
-        } while (choix != 3);
+        } while (choice != 3);
         System.exit(0);
     }
 
@@ -41,7 +50,7 @@ public class Main {
         System.out.println("Renseignez votre mot de passe");
         String password = scan.nextLine();
 
-        var user = UserSQL.authenticateUser(login, password);
+        User user = UserSQL.AuthenticateUser(login, password);
         if (user == null){
             System.out.println("Erreur aucun utilisateur avec cette email ou mot de passe");
         } else if (user.getIsAdmin()){
@@ -74,23 +83,22 @@ public class Main {
             System.out.println("Etes-vous demandeur d'emplois");
             System.out.println("1. Oui ");
             System.out.println("2. Non");
-            if (scan.hasNextInt()){
+            try {
                 choice = scan.nextInt();
-                switch (choice) {
-                    case 1 -> {
-                        isJobSeeker = true;
-                        whileContinue = false;
-                    }
-                    case 2 -> {
-                        whileContinue = false;
-                    }
-                    default -> System.out.println("Le choix n'est pas valide");
-                }
-            }else{
-                System.out.println("Merci de saisir 1 ou 2");
-                scan.nextLine();
+            } catch (InputMismatchException e) {
+                // Gérer une entrée non numérique
+                System.out.println("Veuillez entrer un chiffre.");
+                scan.nextLine(); // Nettoyer le tampon d'entrée
+                choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                continue;
             }
-        } while (whileContinue);
+            switch (choice) {
+                case 1 -> {
+                    isJobSeeker = true;
+                }
+                default -> System.out.println("Le choix n'est pas valide");
+            }
+        } while (choice == 0);
 
         UserSQL.AddUser(email, password, firstName, lastName, isJobSeeker, dateOfBirth);
     }
@@ -129,7 +137,7 @@ public class Main {
                     } else {
                         whileContinue = false;
                     }
-            }
+                }
             }else{
                 System.out.println("Merci de renseigner des chiffres");
                 scan.next();
