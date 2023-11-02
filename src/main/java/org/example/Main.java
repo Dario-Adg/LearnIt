@@ -78,7 +78,6 @@ public class Main {
 
         int choice;
         boolean isJobSeeker = false;
-        boolean whileContinue = true;
         do{
             System.out.println("Etes-vous demandeur d'emplois");
             System.out.println("1. Oui ");
@@ -93,9 +92,8 @@ public class Main {
                 continue;
             }
             switch (choice) {
-                case 1 -> {
-                    isJobSeeker = true;
-                }
+                case 1 -> isJobSeeker = true;
+                case 2 -> {}
                 default -> System.out.println("Le choix n'est pas valide");
             }
         } while (choice == 0);

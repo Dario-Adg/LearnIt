@@ -25,7 +25,8 @@ CREATE TABLE `learnit`.`user` (
 CREATE TABLE `learnit`.`program` (
     `Id` INT AUTO_INCREMENT PRIMARY KEY ,
     `Name` VARCHAR(50) NOT NULL ,
-    `Description` TEXT
+    `Description` TEXT,
+    `JobIds` VARCHAR(255)
 );
 
 CREATE TABLE `learnit`.`user_program` (

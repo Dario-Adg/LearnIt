@@ -1,20 +1,23 @@
 package back;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Program {
     private int Id;
     private String Name;
     private String Description;
-    private final List<Job> Jobs = new ArrayList<>();
+    private String JobIds;
     private final List<Module> Modules= new ArrayList<>();
     private final List<UserProgram> ProgramUsers = new ArrayList<>();
 
-    public Program (int id, String name, String description){
+    public Program (int id, String name, String description, String jobIds){
         this.Id = id;
         this.Name = name;
         this.Description = description;
+        this.JobIds = jobIds;
     }
 
     //Getters
@@ -31,14 +34,27 @@ public class Program {
     }
 
     public List<Job> getJobs() {
-        return this.Jobs;
+        if (this.JobIds.isBlank()){
+            return new ArrayList<>();
+        }
+        List<Integer> jobIds = Arrays.stream(this.JobIds.split(","))
+                .map(String::trim) // Supprime les espaces éventuels autour des IDs
+                .map(Integer::valueOf)
+                .toList();
+
+        // Supposez que vous ayez une liste de tous les jobs disponibles
+        List<Job> allJobs = Job.GetAllJobs();
+
+        return allJobs.stream()
+                .filter(job -> jobIds.contains(job.getId()))
+                .toList();
     }
 
     public List<Module> getModules() {
         return this.Modules;
     }
 
-    public List<UserProgram> getProgramUsers() {
+    public List<UserProgram>  getProgramUsers() {
         return this.ProgramUsers;
     }
 
@@ -55,12 +71,12 @@ public class Program {
         this.Description = description;
     }
 
-    public void addJob(Job job) {
-        Jobs.add(job);
-    }
-
-    public void removeJob(Job job) {
-        Jobs.remove(job);
+    public static String setJobIds (List<Job> jobs){
+        return jobs.stream()
+                .map(Job::getId)
+                .map(String::valueOf)
+                .sorted()
+                .collect(Collectors.joining(", "));
     }
 
     public void addModule(Module module) {

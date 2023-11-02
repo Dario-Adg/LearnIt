@@ -3,15 +3,19 @@ package dataBaseSQL;
 import back.Program;
 import back.UserProgram;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static dataBaseSQL.Helper.EncodeStringDateToDate;
+import static dataBaseSQL.Helper.hashPassword;
+
 public class ProgramSQL {
     static Connection connection = ConnectionBDD.ConnectionBDD();
 
-    public static List<Program> GetAllPrograms() {
+    public static List<Program> GetPrograms() {
         String sql = "SELECT * FROM program";
         List<Program> programs = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -20,7 +24,8 @@ public class ProgramSQL {
                 int id = resultSet.getInt("Id");
                 String name = resultSet.getString("Name");
                 String description = resultSet.getString("Description");
-                Program program = new Program(id, name, description);
+                String jobIds = resultSet.getString("JobIds");
+                Program program = new Program(id, name, description, jobIds);
 
                 programs.add(program);
             }
@@ -45,7 +50,8 @@ public class ProgramSQL {
                     int id = resultSet.getInt("Id");
                     String name = resultSet.getString("Name");
                     String description = resultSet.getString("Description");
-                    Program program = new Program(id, name, description);
+                    String jobIds = resultSet.getString("JobIds");
+                    Program program = new Program(id, name, description, jobIds);
                     boolean isValid = resultSet.getBoolean("IsValid");
                     Date endDateProgram = resultSet.getDate("EndDateProgram");
                     UserProgram userProgram = new UserProgram(null, program, isValid, endDateProgram);
@@ -60,5 +66,22 @@ public class ProgramSQL {
             System.out.println("VendorError : " + ex.getErrorCode());
         }
         return userPrograms;
+    }
+
+    public static void AddProgram(String name, String description, String jobIds){
+        String sql = "INSERT INTO program (`Name`, `Description`, `JobIds`) VALUES (?,?,?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.setString(3, jobIds);
+            preparedStatement.executeUpdate();
+            System.out.println("Parcours créé avec succès");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
     }
 }

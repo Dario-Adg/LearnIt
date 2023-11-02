@@ -3,6 +3,7 @@ package back;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Job {
     SOFTWARE_ENGINEER(1, "Ingénieur logiciel"),
@@ -32,7 +33,14 @@ public enum Job {
         return this.FrenchLabel;
     }
 
-    public List<Job> GetAllJobs(){
+    public static List<Job> GetAllJobs(){
         return new ArrayList<>(Arrays.asList(Job.values()));
+    }
+
+    public static String getJobNamesSeparatedByCommas(List<Job> jobList) {
+
+        return jobList.stream()
+                .map(Job::getFrenchLabel)
+                .collect(Collectors.joining(", "));
     }
 }
