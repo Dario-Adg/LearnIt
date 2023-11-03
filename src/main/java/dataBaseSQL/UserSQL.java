@@ -106,7 +106,7 @@ public class UserSQL {
         return users;
     }
 
-    public static User GetUserByIdWithProgram(int userId){
+    public static User GetUserByIdForDisplay(int userId){
         String sql = "SELECT * FROM user WHERE Id = ? AND IsAdmin <> 1";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

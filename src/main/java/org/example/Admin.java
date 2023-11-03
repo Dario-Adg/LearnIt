@@ -1,6 +1,7 @@
 package org.example;
 
 import back.Job;
+import back.Module;
 import back.Program;
 import back.UserProgram;
 import dataBaseSQL.ProgramSQL;
@@ -57,7 +58,7 @@ public class Admin {
                 System.out.println("Id : " + user.getId());
                 System.out.println("Prénom : " + user.getFirstName());
                 System.out.println("Nom : " + user.getLastName());
-                System.out.println("---------------------------------");
+                System.out.println("--------------------------");
             }
             Scanner scan = new Scanner(System.in);
             int choice;
@@ -88,19 +89,18 @@ public class Admin {
                                 userId = 0; // Réinitialiser le choix pour éviter une boucle infinie
                                 continue;
                             }
-                            User user = UserSQL.GetUserByIdWithProgram(userId);
+                            User user = UserSQL.GetUserByIdForDisplay(userId);
                             if (user != null){
                                 System.out.println("Id : " + user.getId());
                                 System.out.println("Prénom : " + user.getFirstName());
                                 System.out.println("Nom : " + user.getLastName());
                                 System.out.println("Date de naissance : " +
-                                        new SimpleDateFormat("dd-MM-yyyy").format(user.getDateOfBirth()));
+                                        new SimpleDateFormat("dd MMMM yyyy").format(user.getDateOfBirth()));
                                 System.out.println("Chercheur d'emplois : " + (user.getIsJobSeeker() ? "Oui" : "Non"));
                                 System.out.println(user.getDiplomaNumber() != 0 ?
                                         "Numéro diplôme : " + user.getDiplomaNumber() : "Pas encore de numéro de diplôme");
                                 List<UserProgram> userPrograms = user.getUserPrograms();
                                 if (!userPrograms.isEmpty()){
-                                    System.out.println("Parcours suivi par " + user.getFirstNameLastName());
                                     for (UserProgram userProgram: userPrograms) {
                                         System.out.println("**");
                                         System.out.println("Id du parcours : " + userProgram.getProgram().getId());
@@ -110,13 +110,14 @@ public class Admin {
                                         boolean programValid = userProgram.isValid();
                                         System.out.println(programValid ? "Parcours validé" : "Parcours en cours");
                                         System.out.println(programValid ? "Parcours terminé" :
-                                                "Fin limite du parcours : " + userProgram.getEndDateProgram());
+                                                "Fin limite du parcours : " +
+                                                        new SimpleDateFormat("dd MMMM yyyy").format(userProgram.getEndDateProgram()));
                                         System.out.println("**");
                                     }
                                 } else {
                                     System.out.println("Aucun parcours suivi par " + user.getFirstNameLastName());
                                 }
-                                System.out.println("---------------------------------");
+                                System.out.println("--------------------------");
                                 int choiceForAdmin;
                                 do {
                                     System.out.println("Souhaitez-vous passer admin " + user.getFirstNameLastName() + " ?");
@@ -187,11 +188,11 @@ public class Admin {
                 List<Job> jobs = program.getJobs();
                 System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
                         "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
-                System.out.println("---------------------------------");
+                System.out.println("--------------------------");
             }
             int choice;
             do {
-                System.out.println("1. Sélectionnés un parcours");
+                System.out.println("1. Sélectionner un parcours");
                 System.out.println("2. Créer un parcours ");
                 System.out.println("3. Sortir ");
                 System.out.println("--------------------------");
@@ -204,11 +205,48 @@ public class Admin {
                     choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
                     continue;
                 }
-
                 switch (choice) {
                     case 1 -> {
-                        GetUsers();
-                        System.out.println();
+                        int programId;
+                        do{
+                            System.out.println("Indiquer l'Id du program souhaité");
+                            try {
+                                programId = scan.nextInt();
+                            } catch (InputMismatchException e) {
+                                // Gérer une entrée non numérique
+                                System.out.println("Veuillez entrer un chiffre.");
+                                scan.nextLine(); // Nettoyer le tampon d'entrée
+                                programId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                continue;
+                            }
+                            Program program = ProgramSQL.GetProgramByIdForDisplay(programId);
+                            if (program != null){
+                                System.out.println("--------------------------");
+                                System.out.println("Id : " + program.getId());
+                                System.out.println("Nom : " + program.getName());
+                                System.out.println("Description: " + program.getDescription());
+                                List<Job> jobs = program.getJobs();
+                                System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
+                                        "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
+                                List<Module> modules = program.getModules();
+
+                                if (!modules.isEmpty()){
+                                    for (Module module: modules) {
+                                        System.out.println("**");
+                                        System.out.println("Id du module : " + module.getId());
+                                        System.out.println("Nom du module : " + module.getName());
+                                        System.out.println("Description du module : " + module.getDescription());
+                                        System.out.println("**");
+                                    }
+                                } else {
+                                    System.out.println("Aucun module dans ce parcours");
+                                }
+                                System.out.println("--------------------------");
+                            } else {
+                                System.out.println("Le parcours n'existe pas");
+                                break;
+                            }
+                        } while (programId == 0);
                     }
                     case 2 -> CreateProgram(scan);
                     case 3 -> MenuAdmin();

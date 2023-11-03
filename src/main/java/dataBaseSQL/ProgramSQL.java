@@ -1,6 +1,8 @@
 package dataBaseSQL;
 
+import back.Module;
 import back.Program;
+import back.User;
 import back.UserProgram;
 
 import java.security.NoSuchAlgorithmException;
@@ -83,5 +85,35 @@ public class ProgramSQL {
             System.out.println("SQLState : " + ex.getSQLState());
             System.out.println("VendorError : " + ex.getErrorCode());
         }
+    }
+
+    public static Program GetProgramByIdForDisplay(int programId){
+        String sql = "SELECT * FROM program WHERE Id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, programId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("Id");
+                    String name = resultSet.getString("Name");
+                    String description = resultSet.getString("Description");
+                    String jobIds = resultSet.getString("JobIds");
+                    Program program = new Program(id, name, description, jobIds);
+                    List<Module> modules = ModuleSQL.GetModulesByProgramId(programId);
+                    if (!modules.isEmpty()){
+                        for (Module module: modules) {
+                            program.addModule(module);
+                        }
+                    }
+                    return program;
+                }
+            }
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+        return null;
     }
 }
