@@ -45,10 +45,31 @@ public class Main {
 
     public static void LogIn(){
         Scanner scan = new Scanner(System.in);
-        System.out.println("Renseignez votre login");
-        String login = scan.nextLine();
-        System.out.println("Renseignez votre mot de passe");
-        String password = scan.nextLine();
+
+        String login;
+        do {
+            System.out.println("Renseignez votre login");
+            login = scan.nextLine();
+            if (login.isBlank()){
+                System.out.println("Login invalide ");
+            }
+        } while (login.isBlank());
+
+        //String login = scan.nextLine();
+
+
+
+        //String password = scan.nextLine();
+        String password;
+        do {
+            System.out.println("Renseignez votre mot de passe");
+            password = scan.nextLine();
+            if (password.isBlank()){
+                System.out.println("mdp invalide ");
+            }
+        } while (password.isBlank());
+
+
 
         User user = UserSQL.AuthenticateUser(login, password);
         if (user == null){
@@ -62,14 +83,54 @@ public class Main {
 
     public static void Inscription(){
         Scanner scan = new Scanner(System.in);
-        System.out.println("Renseignez votre email");
-        String email = scan.nextLine();
-        System.out.println("Renseignez votre mot de passe");
-        String password = scan.nextLine();
-        System.out.println("Renseignez votre prenom");
-        String firstName = scan.nextLine();
-        System.out.println("Renseignez votre nom");
-        String lastName = scan.nextLine().toUpperCase();
+
+        String email;
+        do {
+            System.out.println("Renseignez votre email");
+            email = scan.nextLine();
+            if (email.isBlank()){
+                System.out.println("L'email est vide merci de renseignez un nouvelle email ");
+            }
+        } while (email.isBlank());
+
+
+
+        //String password = scan.nextLine();
+
+        String password;
+        do {
+            System.out.println("Renseignez votre mot de passe");
+            password = scan.nextLine();
+            if (password.isBlank()){
+                System.out.println("mdp est vide merci de renseignez un nouvelle mdp ");
+            }
+        } while (password.isBlank());
+
+
+
+        //String firstName = scan.nextLine();
+
+        String firstName;
+        do {
+            System.out.println("Renseignez votre prenom");
+            firstName = scan.nextLine();
+            if (firstName.isBlank()){
+                System.out.println("veuiller renseignez votre prenom ");
+            }
+        } while (firstName.isBlank());
+
+
+        //String lastName = scan.nextLine().toUpperCase();
+
+        String lastName;
+        do {
+            System.out.println("Renseignez votre Nom");
+            lastName = scan.nextLine();
+            if (lastName.isBlank()){
+                System.out.println("veuiller renseignez votre Nom ");
+            }
+        } while (lastName.isBlank());
+
         String dayOfBirth = whileForDateOfBirth(scan, "Renseignez votre jour de naissance", false, false);
         String monthOfBirth = whileForDateOfBirth(scan, "Renseignez votre mois de naissance", true, false);
         String yearOfBirth = whileForDateOfBirth(scan, "Renseignez votre année de naissance",false, true);
