@@ -56,7 +56,7 @@ public class Main {
         } else if (user.getIsAdmin()){
             MenuAdmin();
         } else{
-            MenuUser();
+            MenuUser(user.getId());
         }
     }
 
