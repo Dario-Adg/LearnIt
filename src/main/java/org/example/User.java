@@ -24,10 +24,10 @@ public class User {
             }
         } while (choix != 3);
     }
-    public static void GetUserPrograms(){
+    private static void GetUserPrograms(){
         Scanner scan = new Scanner(System.in);
     }
-    public static void AddUserProgram(){
+    private static void AddUserProgram(){
         Scanner scan = new Scanner(System.in);
     }
 }

@@ -43,7 +43,7 @@ public class Main {
         System.exit(0);
     }
 
-    public static void LogIn(){
+    private static void LogIn(){
         Scanner scan = new Scanner(System.in);
         System.out.println("Renseignez votre login");
         String login = scan.nextLine();
@@ -60,7 +60,7 @@ public class Main {
         }
     }
 
-    public static void Inscription(){
+    private static void Inscription(){
         Scanner scan = new Scanner(System.in);
         System.out.println("Renseignez votre email");
         String email = scan.nextLine();

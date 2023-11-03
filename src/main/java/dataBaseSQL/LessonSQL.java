@@ -1,6 +1,7 @@
 package dataBaseSQL;
 
 import back.Lesson;
+import back.Module;
 import back.User;
 
 import java.security.NoSuchAlgorithmException;
@@ -14,7 +15,7 @@ import static dataBaseSQL.Helper.hashPassword;
 public class LessonSQL {
     static Connection connection = ConnectionBDD.ConnectionBDD();
 
-    public static List<Lesson> GetAllLessons() {
+    public static List<Lesson> GetLessons() {
         String sql = "SELECT * FROM lesson";
         List<Lesson> lessons = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -60,5 +61,74 @@ public class LessonSQL {
             System.out.println("VendorError : " + ex.getErrorCode());
         }
         return lessons;
+    }
+
+    public static Lesson GetLessonByIdForDisplay(int lessonId){
+        String sql = "SELECT * FROM lesson WHERE Id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, lessonId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("Id");
+                    String name = resultSet.getString("Name");
+                    String description = resultSet.getString("Description");
+                    return new Lesson(id, name, description);
+                }
+            }
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+        return null;
+    }
+
+    public static void AddLesson(String name, String description){
+        String sql = "INSERT INTO lesson (`Name`, `Description`) VALUES (?,?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.executeUpdate();
+            System.out.println("Cours créé avec succès");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
+
+    public static void UpdateLesson(int lessonId, String name, String description){
+        String sql = "UPDATE lesson SET `Name` = ?, `Description` = ? WHERE `Id` = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.setInt(3, lessonId);
+            preparedStatement.executeUpdate();
+            System.out.println("Cours modifié avec succès");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
+    public static void DeleteLesson(int lessonId){
+        String sql = "DELETE FROM lesson WHERE `Id` = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, lessonId);
+            preparedStatement.executeUpdate();
+            System.out.println("Cours supprimé avec succès");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
     }
 }
