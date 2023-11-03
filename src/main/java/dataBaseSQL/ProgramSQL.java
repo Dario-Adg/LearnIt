@@ -87,6 +87,42 @@ public class ProgramSQL {
         }
     }
 
+    //Modifier Parcoure
+    public static void UpdateProgram(String name, String description, String jobIds, int id){
+        String sql = "UPDATE `program` SET `Name`=?,`Description`=? WHERE Id=?";
+
+
+        try (PreparedStatement prepareStatement = connection.prepareStatement(sql)) {
+            prepareStatement.setString(1, name);
+            prepareStatement.setString(2, description);
+            prepareStatement.setString(3, jobIds);
+            prepareStatement.setInt(4, id);
+            prepareStatement.executeUpdate();
+            System.out.println("Parcours modifier avec succès");
+        }catch (SQLException ex){
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
+
+    //Supprimer Parcoure
+    public static void DelateProgram(int id){
+        String sql = "DELETE FROM `program` WHERE `id`=?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            System.out.println("Parcours supprimer avec succès");
+        }catch (SQLException ex){
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+
+    }
+
     public static Program GetProgramByIdForDisplay(int programId){
         String sql = "SELECT * FROM program WHERE Id = ?";
 
