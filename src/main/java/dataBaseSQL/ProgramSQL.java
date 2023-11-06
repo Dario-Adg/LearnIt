@@ -39,7 +39,7 @@ public class ProgramSQL {
         }
         return programs;
     }
-    public static List<Program> GetProgramsWithThisModule(int moduleId) {
+    public static List<Program> GetProgramsByModuleId(int moduleId) {
         String sql = "SELECT program.* FROM program " +
                 "INNER JOIN program_module ON program.id = program_module.ProgramId " +
                 "WHERE program_module.ModuleId = ?";
@@ -128,7 +128,7 @@ public class ProgramSQL {
                     List<Module> modules = ModuleSQL.GetModulesByProgramId(programId);
                     if (!modules.isEmpty()){
                         for (Module module: modules) {
-                            program.addModule(module);
+                            program.AddModule(module);
                         }
                     }
                     return program;

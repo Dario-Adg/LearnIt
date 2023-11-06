@@ -13,19 +13,19 @@ public class NoteModule {
         this.IsValid = isValid;
     }
 
-    public User getUser() {
+    public User GetUser() {
         return this.User;
     }
 
-    public Module getModule() {
+    public Module GetModule() {
         return this.Module;
     }
 
-    public boolean isValid() {
+    public boolean IsValid() {
         return this.IsValid;
     }
 
-    public int getNote() {
+    public int GetNote() {
         return this.Note;
     }
 }

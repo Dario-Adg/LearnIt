@@ -15,19 +15,19 @@ public class UserProgram {
         this.EndDateProgram = endDateProgram;
     }
 
-    public User getUser() {
+    public User GetUser() {
         return this.User;
     }
 
-    public Program getProgram() {
+    public Program GetProgram() {
         return this.Program;
     }
 
-    public boolean isValid() {
+    public boolean IsValid() {
         return this.IsValid;
     }
 
-    public Date getEndDateProgram() {
+    public Date GetEndDateProgram() {
         return this.EndDateProgram;
     }
 }

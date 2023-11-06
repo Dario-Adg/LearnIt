@@ -127,7 +127,7 @@ public class UserSQL {
                     List<UserProgram> userPrograms = ProgramSQL.GetProgramsByUserId(id);
                     if (!userPrograms.isEmpty()){
                         for (UserProgram userProgram: userPrograms) {
-                            user.addProgram(userProgram.getProgram(), userProgram.isValid(), userProgram.getEndDateProgram());
+                            user.AddProgram(userProgram.GetProgram(), userProgram.IsValid(), userProgram.GetEndDateProgram());
                         }
                     }
                     return user;

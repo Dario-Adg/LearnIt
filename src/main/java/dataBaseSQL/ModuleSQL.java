@@ -124,7 +124,13 @@ public class ModuleSQL {
                     List<Lesson> lessons = LessonSQL.GetLessonsByModuleId(moduleId);
                     if (!lessons.isEmpty()){
                         for (Lesson lesson: lessons) {
-                            module.addLesson(lesson);
+                            module.AddLesson(lesson);
+                        }
+                    }
+                    List<Program> programs = ProgramSQL.GetProgramsByModuleId(moduleId);
+                    if (!programs.isEmpty()){
+                        for (Program program: programs) {
+                            module.AddProgram(program);
                         }
                     }
                     return module;

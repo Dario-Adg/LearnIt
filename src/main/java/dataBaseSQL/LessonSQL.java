@@ -1,16 +1,9 @@
 package dataBaseSQL;
 
 import back.Lesson;
-import back.Module;
-import back.User;
-
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static dataBaseSQL.Helper.EncodeStringDateToDate;
-import static dataBaseSQL.Helper.hashPassword;
 
 public class LessonSQL {
     static Connection connection = ConnectionBDD.ConnectionBDD();

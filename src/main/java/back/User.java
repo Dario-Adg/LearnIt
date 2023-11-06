@@ -41,103 +41,103 @@ public class User {
 
 
     //Getters
-    public int getId() {
+    public int GetId() {
         return this.Id;
     }
 
-    public String getFirstName() {
+    public String GetFirstName() {
         return this.FirstName;
     }
 
-    public String getLastName() {
+    public String GetLastName() {
         return this.LastName;
     }
 
-    public String getFirstNameLastName(){
-        return this.getFirstName() + " " + this.getLastName();
+    public String GetFirstNameLastName(){
+        return this.GetFirstName() + " " + this.GetLastName();
     }
-    public String getLastNameFirstName(){
-        return this.getLastName() + " " + this.getFirstName();
+    public String GetLastNameFirstName(){
+        return this.GetLastName() + " " + this.GetFirstName();
     }
 
-    public String getEmail() {
+    public String GetEmail() {
         return this.Email;
     }
 
-    public String getPassword() {
+    public String GetPassword() {
         return this.Password;
     }
 
-    public boolean getIsAdmin() {
+    public boolean GetIsAdmin() {
         return this.IsAdmin;
     }
 
-    public boolean getIsJobSeeker() {
+    public boolean GetIsJobSeeker() {
         return this.IsJobSeeker;
     }
 
-    public Integer getDiplomaNumber() {
+    public Integer GetDiplomaNumber() {
         return this.DiplomaNumber;
     }
 
-    public Date getDateOfBirth() {
+    public Date GetDateOfBirth() {
         return this.DateOfBirth;
     }
 
-    public List<UserProgram> getUserPrograms() {
+    public List<UserProgram> GetUserPrograms() {
         return this.UserPrograms;
     }
 
-    public List<NoteModule> getNoteModules() {
+    public List<NoteModule> GetNoteModules() {
         return this.NoteModules;
     }
 
     //Setters
-    public void setId(int id) {
+    public void SetId(int id) {
         this.Id = id;
     }
 
-    public void setFirstName(String firstName) {
+    public void SetFirstName(String firstName) {
         this.FirstName = firstName;
     }
 
-    public void setLastName(String lastName) {
+    public void SetLastName(String lastName) {
         this.LastName = lastName;
     }
 
-    public void setEmail(String email) {
+    public void SetEmail(String email) {
         this.Email = email;
     }
 
-    public void setPassword(String password) {
+    public void SetPassword(String password) {
         this.Password = password;
     }
 
-    public void setIsAdmin(boolean isAdmin) {
+    public void SetIsAdmin(boolean isAdmin) {
         this.IsAdmin = isAdmin;
     }
 
-    public void setIsJobSeeker(boolean isJobSeeker) {
+    public void SetIsJobSeeker(boolean isJobSeeker) {
         this.IsJobSeeker = isJobSeeker;
     }
 
-    public void setDiplomaNumber(int diplomaNumber) {
+    public void SetDiplomaNumber(int diplomaNumber) {
         this.DiplomaNumber = diplomaNumber;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void SetDateOfBirth(Date dateOfBirth) {
         this.DateOfBirth = dateOfBirth;
     }
 
-    public void addProgram(Program program, boolean isValid, Date endDateProgram) {
+    public void AddProgram(Program program, boolean isValid, Date endDateProgram) {
         UserProgram userProgram = new UserProgram(this, program, isValid, endDateProgram);
         this.UserPrograms.add(userProgram);
-        program.getProgramUsers().add(userProgram);
+        program.GetProgramUsers().add(userProgram);
     }
 
-    public void addNoteModule(Module module, int note, boolean isValid) {
+    public void AddNoteModule(Module module, int note, boolean isValid) {
         NoteModule noteModule = new NoteModule(this, module, note, isValid);
         this.NoteModules.add(noteModule);
-        module.getNoteModules().add(noteModule);
+        module.GetNoteModules().add(noteModule);
     }
 }

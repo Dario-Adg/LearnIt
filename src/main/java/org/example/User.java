@@ -38,15 +38,15 @@ public class User {
 
         for (UserProgram userProgram: userPrograms) {
             System.out.println("**");
-            System.out.println("Id du parcours : " + userProgram.getProgram().getId());
-            System.out.println("Nom du parcours : " + userProgram.getProgram().getName());
+            System.out.println("Id du parcours : " + userProgram.GetProgram().GetId());
+            System.out.println("Nom du parcours : " + userProgram.GetProgram().GetName());
             System.out.println("Description du parcours : " +
-                    userProgram.getProgram().getDescription());
-            boolean programValid = userProgram.isValid();
+                    userProgram.GetProgram().GetDescription());
+            boolean programValid = userProgram.IsValid();
             System.out.println(programValid ? "Parcours validé" : "Parcours en cours");
             System.out.println(programValid ? "Parcours terminé" :
                     "Fin limite du parcours : " +
-                            new SimpleDateFormat("dd MMMM yyyy").format(userProgram.getEndDateProgram()));
+                            new SimpleDateFormat("dd MMMM yyyy").format(userProgram.GetEndDateProgram()));
             System.out.println("**");
         }
 
@@ -58,12 +58,12 @@ public class User {
         List<Program> programs = ProgramSQL.GetPrograms();
 
         for (Program program: programs) {
-            System.out.println("Id : " + program.getId());
-            System.out.println("Nom : " + program.getName());
-            System.out.println("Description: " + program.getDescription());
-            List<Job> jobs = program.getJobs();
+            System.out.println("Id : " + program.GetId());
+            System.out.println("Nom : " + program.GetName());
+            System.out.println("Description: " + program.GetDescription());
+            List<Job> jobs = program.GetJobs();
             System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                    "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
+                    "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
             System.out.println("--------------------------");
         }
 
@@ -83,20 +83,20 @@ public class User {
             Program program = ProgramSQL.GetProgramByIdForDisplay(programId);
             if (program != null){
                 System.out.println("--------------------------");
-                System.out.println("Id : " + program.getId());
-                System.out.println("Nom : " + program.getName());
-                System.out.println("Description: " + program.getDescription());
-                List<Job> jobs = program.getJobs();
+                System.out.println("Id : " + program.GetId());
+                System.out.println("Nom : " + program.GetName());
+                System.out.println("Description: " + program.GetDescription());
+                List<Job> jobs = program.GetJobs();
                 System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                        "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
-                List<Module> modules = program.getModules();
+                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
+                List<Module> modules = program.GetModules();
 
                 if (!modules.isEmpty()){
                     for (Module module: modules) {
                         System.out.println("**");
-                        System.out.println("Id du module : " + module.getId());
-                        System.out.println("Nom du module : " + module.getName());
-                        System.out.println("Description du module : " + module.getDescription());
+                        System.out.println("Id du module : " + module.GetId());
+                        System.out.println("Nom du module : " + module.GetName());
+                        System.out.println("Description du module : " + module.GetDescription());
                         System.out.println("**");
                     }
                 } else {

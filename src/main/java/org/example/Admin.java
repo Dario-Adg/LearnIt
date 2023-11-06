@@ -52,9 +52,9 @@ public class Admin {
             System.out.println("Aucun utilisateur");
         } else {
             for (User user: users) {
-                System.out.println("Id : " + user.getId());
-                System.out.println("Prénom : " + user.getFirstName());
-                System.out.println("Nom : " + user.getLastName());
+                System.out.println("Id : " + user.GetId());
+                System.out.println("Prénom : " + user.GetFirstName());
+                System.out.println("Nom : " + user.GetLastName());
                 System.out.println("--------------------------");
             }
             Scanner scan = new Scanner(System.in);
@@ -88,36 +88,36 @@ public class Admin {
                             }
                             User user = UserSQL.GetUserByIdForDisplay(userId);
                             if (user != null){
-                                System.out.println("Id : " + user.getId());
-                                System.out.println("Prénom : " + user.getFirstName());
-                                System.out.println("Nom : " + user.getLastName());
+                                System.out.println("Id : " + user.GetId());
+                                System.out.println("Prénom : " + user.GetFirstName());
+                                System.out.println("Nom : " + user.GetLastName());
                                 System.out.println("Date de naissance : " +
-                                        new SimpleDateFormat("dd MMMM yyyy").format(user.getDateOfBirth()));
-                                System.out.println("Chercheur d'emplois : " + (user.getIsJobSeeker() ? "Oui" : "Non"));
-                                System.out.println(user.getDiplomaNumber() != 0 ?
-                                        "Numéro diplôme : " + user.getDiplomaNumber() : "Pas encore de numéro de diplôme");
-                                List<UserProgram> userPrograms = user.getUserPrograms();
+                                        new SimpleDateFormat("dd MMMM yyyy").format(user.GetDateOfBirth()));
+                                System.out.println("Chercheur d'emplois : " + (user.GetIsJobSeeker() ? "Oui" : "Non"));
+                                System.out.println(user.GetDiplomaNumber() != 0 ?
+                                        "Numéro diplôme : " + user.GetDiplomaNumber() : "Pas encore de numéro de diplôme");
+                                List<UserProgram> userPrograms = user.GetUserPrograms();
                                 if (!userPrograms.isEmpty()){
                                     for (UserProgram userProgram: userPrograms) {
                                         System.out.println("**");
-                                        System.out.println("Id du parcours : " + userProgram.getProgram().getId());
-                                        System.out.println("Nom du parcours : " + userProgram.getProgram().getName());
+                                        System.out.println("Id du parcours : " + userProgram.GetProgram().GetId());
+                                        System.out.println("Nom du parcours : " + userProgram.GetProgram().GetName());
                                         System.out.println("Description du parcours : " +
-                                                userProgram.getProgram().getDescription());
-                                        boolean programValid = userProgram.isValid();
+                                                userProgram.GetProgram().GetDescription());
+                                        boolean programValid = userProgram.IsValid();
                                         System.out.println(programValid ? "Parcours validé" : "Parcours en cours");
                                         System.out.println(programValid ? "Parcours terminé" :
                                                 "Fin limite du parcours : " +
-                                                        new SimpleDateFormat("dd MMMM yyyy").format(userProgram.getEndDateProgram()));
+                                                        new SimpleDateFormat("dd MMMM yyyy").format(userProgram.GetEndDateProgram()));
                                         System.out.println("**");
                                     }
                                 } else {
-                                    System.out.println("Aucun parcours suivi par " + user.getFirstNameLastName());
+                                    System.out.println("Aucun parcours suivi par " + user.GetFirstNameLastName());
                                 }
                                 System.out.println("--------------------------");
                                 int choiceForAdmin;
                                 do {
-                                    System.out.println("Souhaitez-vous passer admin " + user.getFirstNameLastName() + " ?");
+                                    System.out.println("Souhaitez-vous passer admin " + user.GetFirstNameLastName() + " ?");
                                     System.out.println("1. Oui ");
                                     System.out.println("2. Non ");
                                     try {
@@ -178,12 +178,12 @@ public class Admin {
             } while (choiceForCreateProgram != 2);
         } else {
             for (Program program: programs) {
-                System.out.println("Id : " + program.getId());
-                System.out.println("Nom : " + program.getName());
-                System.out.println("Description: " + program.getDescription());
-                List<Job> jobs = program.getJobs();
+                System.out.println("Id : " + program.GetId());
+                System.out.println("Nom : " + program.GetName());
+                System.out.println("Description: " + program.GetDescription());
+                List<Job> jobs = program.GetJobs();
                 System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                        "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
+                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
                 System.out.println("--------------------------");
             }
             int choice;
@@ -218,20 +218,20 @@ public class Admin {
                             Program program = ProgramSQL.GetProgramByIdForDisplay(programId);
                             if (program != null){
                                 System.out.println("--------------------------");
-                                System.out.println("Id : " + program.getId());
-                                System.out.println("Nom : " + program.getName());
-                                System.out.println("Description: " + program.getDescription());
-                                List<Job> jobs = program.getJobs();
+                                System.out.println("Id : " + program.GetId());
+                                System.out.println("Nom : " + program.GetName());
+                                System.out.println("Description: " + program.GetDescription());
+                                List<Job> jobs = program.GetJobs();
                                 System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                                        "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
-                                List<Module> modules = program.getModules();
+                                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
+                                List<Module> modules = program.GetModules();
 
                                 if (!modules.isEmpty()){
                                     for (Module module: modules) {
                                         System.out.println("**");
-                                        System.out.println("Id du module : " + module.getId());
-                                        System.out.println("Nom du module : " + module.getName());
-                                        System.out.println("Description du module : " + module.getDescription());
+                                        System.out.println("Id du module : " + module.GetId());
+                                        System.out.println("Nom du module : " + module.GetName());
+                                        System.out.println("Description du module : " + module.GetDescription());
                                         System.out.println("**");
                                     }
                                 } else {
@@ -279,9 +279,9 @@ public class Admin {
             } while (choiceForCreateModule != 2);
         } else {
             for (Module module: modules) {
-                System.out.println("Id : " + module.getId());
-                System.out.println("Nom : " + module.getName());
-                System.out.println("Description: " + module.getDescription());
+                System.out.println("Id : " + module.GetId());
+                System.out.println("Nom : " + module.GetName());
+                System.out.println("Description: " + module.GetDescription());
                 System.out.println("--------------------------");
             }
             int choice;
@@ -316,22 +316,34 @@ public class Admin {
                             Module module = ModuleSQL.GetModuleByIdForDisplay(moduleId);
                             if (module != null){
                                 System.out.println("--------------------------");
-                                System.out.println("Id : " + module.getId());
-                                System.out.println("Nom : " + module.getName());
-                                System.out.println("Description: " + module.getDescription());
-                                List<Lesson> lessons = module.getLessons();
+                                System.out.println("Id : " + module.GetId());
+                                System.out.println("Nom : " + module.GetName());
+                                System.out.println("Description: " + module.GetDescription());
 
-                                if (!lessons.isEmpty()){
-                                    for (Lesson lesson: lessons) {
+                                if (!module.GetPrograms().isEmpty()){
+                                    for (Program program: module.GetPrograms()) {
                                         System.out.println("**");
-                                        System.out.println("Id du cours : " + lesson.getId());
-                                        System.out.println("Nom du cours : " + lesson.getName());
-                                        System.out.println("Description du cours : " + lesson.getDescription());
+                                        System.out.println("Id du parcours : " + program.GetId());
+                                        System.out.println("Nom du parcours : " + program.GetName());
+                                        System.out.println("Description du parcours : " + program.GetDescription());
+                                        System.out.println("**");
+                                    }
+                                } else {
+                                    System.out.println("Aucun parcours ne possèdent ce module");
+                                }
+
+                                if (!module.GetLessons().isEmpty()){
+                                    for (Lesson lesson: module.GetLessons()) {
+                                        System.out.println("**");
+                                        System.out.println("Id du cours : " + lesson.GetId());
+                                        System.out.println("Nom du cours : " + lesson.GetName());
+                                        System.out.println("Description du cours : " + lesson.GetDescription());
                                         System.out.println("**");
                                     }
                                 } else {
                                     System.out.println("Aucun cours dans ce module");
                                 }
+
                                 System.out.println("--------------------------");
                                 int choiceForSelectedModule;
                                 do {
@@ -354,9 +366,9 @@ public class Admin {
                                         case 1 -> {
                                             List<Program> programs = ProgramSQL.GetPrograms();
                                             for (Program program: programs) {
-                                                System.out.println("Id : " + program.getId());
-                                                System.out.println("Nom : " + program.getName());
-                                                System.out.println("Description: " + program.getDescription());
+                                                System.out.println("Id : " + program.GetId());
+                                                System.out.println("Nom : " + program.GetName());
+                                                System.out.println("Description: " + program.GetDescription());
                                                 System.out.println("--------------------------");
                                             }
                                             int programId;
@@ -372,8 +384,8 @@ public class Admin {
                                                     continue;
                                                 }
                                                 int finalProgramId = programId;
-                                                if (programs.stream().anyMatch(program -> program.getId() == finalProgramId)){
-                                                    ProgramSQL.AddProgramModule(finalProgramId, module.getId());
+                                                if (programs.stream().anyMatch(program -> program.GetId() == finalProgramId)){
+                                                    ProgramSQL.AddProgramModule(finalProgramId, module.GetId());
                                                 }
                                                 else{
                                                     System.out.println("Indiquer un l'id d'un program valide");
@@ -381,19 +393,19 @@ public class Admin {
                                             } while (programId == 0);
                                         }
                                         case 2 -> {
-                                            List<Program> programs = ProgramSQL.GetProgramsWithThisModule(module.getId());
+                                            List<Program> programs = ProgramSQL.GetProgramsByModuleId(module.GetId());
                                             if (programs.isEmpty()){
                                                 System.out.println("Aucun program ne possède ce parcours");
                                             } else {
                                                 for (Program program: programs) {
-                                                    System.out.println("Id : " + program.getId());
-                                                    System.out.println("Nom : " + program.getName());
-                                                    System.out.println("Description: " + program.getDescription());
+                                                    System.out.println("Id : " + program.GetId());
+                                                    System.out.println("Nom : " + program.GetName());
+                                                    System.out.println("Description: " + program.GetDescription());
                                                     System.out.println("--------------------------");
                                                 }
                                                 int programId;
                                                 do{
-                                                    System.out.println("Indiquer l'Id du program ou vous souhaitez ajouté ce module");
+                                                    System.out.println("Indiquer l'Id du program ou vous souhaitez supprimé ce module");
                                                     try {
                                                         programId = scan.nextInt();
                                                     } catch (InputMismatchException e) {
@@ -404,8 +416,8 @@ public class Admin {
                                                         continue;
                                                     }
                                                     int finalProgramId = programId;
-                                                    if (programs.stream().anyMatch(program -> program.getId() == finalProgramId)){
-                                                        ProgramSQL.DeleteProgramModule(finalProgramId, module.getId());
+                                                    if (programs.stream().anyMatch(program -> program.GetId() == finalProgramId)){
+                                                        ProgramSQL.DeleteProgramModule(finalProgramId, module.GetId());
                                                     }
                                                     else{
                                                         System.out.println("Indiquer un l'id d'un program valide");
@@ -422,16 +434,14 @@ public class Admin {
                                                     "laissé vide si vous souhaitez ne pas changé");
                                             String newDescription = scan.nextLine();
                                             if (newName.isBlank()){
-                                                newName = module.getName();
+                                                newName = module.GetName();
                                             }
                                             if (newDescription.isBlank()){
-                                                newDescription = module.getDescription();
+                                                newDescription = module.GetDescription();
                                             }
-                                            ModuleSQL.UpdateModule(module.getId(), newName, newDescription);
+                                            ModuleSQL.UpdateModule(module.GetId(), newName, newDescription);
                                         }
-                                        case 4 -> {
-                                            ModuleSQL.DeleteModule(module.getId());
-                                        }
+                                        case 4 -> ModuleSQL.DeleteModule(module.GetId());
                                         case 5 -> MenuAdmin();
                                         default -> System.out.println("Le choix n'est pas valide");
                                     }
@@ -477,9 +487,9 @@ public class Admin {
             } while (choiceForCreateLesson != 2);
         } else {
             for (Lesson lesson: lessons) {
-                System.out.println("Id : " + lesson.getId());
-                System.out.println("Nom : " + lesson.getName());
-                System.out.println("Description: " + lesson.getDescription());
+                System.out.println("Id : " + lesson.GetId());
+                System.out.println("Nom : " + lesson.GetName());
+                System.out.println("Description: " + lesson.GetDescription());
                 System.out.println("--------------------------");
             }
             int choice;
@@ -514,9 +524,9 @@ public class Admin {
                             Lesson lesson = LessonSQL.GetLessonByIdForDisplay(lessonId);
                             if (lesson != null){
                                 System.out.println("--------------------------");
-                                System.out.println("Id : " + lesson.getId());
-                                System.out.println("Nom : " + lesson.getName());
-                                System.out.println("Description: " + lesson.getDescription());
+                                System.out.println("Id : " + lesson.GetId());
+                                System.out.println("Nom : " + lesson.GetName());
+                                System.out.println("Description: " + lesson.GetDescription());
                                 System.out.println("--------------------------");
                                 int choiceForSelectedLesson;
                                 do {
@@ -539,9 +549,9 @@ public class Admin {
                                         case 1 -> {
                                             List<Module> modules = ModuleSQL.GetModules();
                                             for (Module module: modules) {
-                                                System.out.println("Id : " + module.getId());
-                                                System.out.println("Nom : " + module.getName());
-                                                System.out.println("Description: " + module.getDescription());
+                                                System.out.println("Id : " + module.GetId());
+                                                System.out.println("Nom : " + module.GetName());
+                                                System.out.println("Description: " + module.GetDescription());
                                                 System.out.println("--------------------------");
                                             }
                                             int moduleId;
@@ -557,8 +567,8 @@ public class Admin {
                                                     continue;
                                                 }
                                                 int finalModuleId = moduleId;
-                                                if (modules.stream().anyMatch(module -> module.getId() == finalModuleId)){
-                                                    ModuleSQL.AddModuleLesson(finalModuleId, lesson.getId());
+                                                if (modules.stream().anyMatch(module -> module.GetId() == finalModuleId)){
+                                                    ModuleSQL.AddModuleLesson(finalModuleId, lesson.GetId());
                                                 }
                                                 else{
                                                     System.out.println("Indiquer un l'id d'un module valide");
@@ -566,19 +576,19 @@ public class Admin {
                                             } while (moduleId == 0);
                                         }
                                         case 2 -> {
-                                            List<Module> modules = ModuleSQL.GetModulesWithThisLesson(lesson.getId());
+                                            List<Module> modules = ModuleSQL.GetModulesWithThisLesson(lesson.GetId());
                                             if (modules.isEmpty()){
                                                 System.out.println("Aucun module ne possède ce parcours");
                                             } else {
                                                 for (Module module: modules) {
-                                                    System.out.println("Id : " + module.getId());
-                                                    System.out.println("Nom : " + module.getName());
-                                                    System.out.println("Description: " + module.getDescription());
+                                                    System.out.println("Id : " + module.GetId());
+                                                    System.out.println("Nom : " + module.GetName());
+                                                    System.out.println("Description: " + module.GetDescription());
                                                     System.out.println("--------------------------");
                                                 }
                                                 int moduleId;
                                                 do{
-                                                    System.out.println("Indiquer l'Id du module ou vous souhaitez ajouté ce cours");
+                                                    System.out.println("Indiquer l'Id du module ou vous souhaitez supprimé ce cours");
                                                     try {
                                                         moduleId = scan.nextInt();
                                                     } catch (InputMismatchException e) {
@@ -589,8 +599,8 @@ public class Admin {
                                                         continue;
                                                     }
                                                     int finalModuleId = moduleId;
-                                                    if (modules.stream().anyMatch(module -> module.getId() == finalModuleId)){
-                                                        ModuleSQL.DeleteModuleLesson(finalModuleId, lesson.getId());
+                                                    if (modules.stream().anyMatch(module -> module.GetId() == finalModuleId)){
+                                                        ModuleSQL.DeleteModuleLesson(finalModuleId, lesson.GetId());
                                                     }
                                                     else{
                                                         System.out.println("Indiquer un l'id d'un module valide");
@@ -607,16 +617,14 @@ public class Admin {
                                                     "laissé vide si vous souhaitez ne pas changé");
                                             String newDescription = scan.nextLine();
                                             if (newName.isBlank()){
-                                                newName = lesson.getName();
+                                                newName = lesson.GetName();
                                             }
                                             if (newDescription.isBlank()){
-                                                newDescription = lesson.getDescription();
+                                                newDescription = lesson.GetDescription();
                                             }
-                                            LessonSQL.UpdateLesson(lesson.getId(), newName, newDescription);
+                                            LessonSQL.UpdateLesson(lesson.GetId(), newName, newDescription);
                                         }
-                                        case 4 -> {
-                                            LessonSQL.DeleteLesson(lesson.getId());
-                                        }
+                                        case 4 -> LessonSQL.DeleteLesson(lesson.GetId());
                                         case 5 -> MenuAdmin();
                                         default -> System.out.println("Le choix n'est pas valide");
                                     }
@@ -647,7 +655,7 @@ public class Admin {
         boolean jobHasAdded = false;
         do{
             for (Job job: jobs) {
-                System.out.println(job.getId() + " : " + job.getFrenchLabel());
+                System.out.println(job.GetId() + " : " + job.GetFrenchLabel());
             }
             System.out.println((jobs.size() + 1) + " : Créer le parcours");
             if (!programJobs.isEmpty()){
@@ -669,7 +677,7 @@ public class Admin {
                 continue;
             }
             int finalChoiceJobId = choiceJobId;
-            if (jobs.stream().anyMatch(job -> job.getId() == finalChoiceJobId)){
+            if (jobs.stream().anyMatch(job -> job.GetId() == finalChoiceJobId)){
                 if (!programJobs.contains(jobs.get(finalChoiceJobId-1))){
                     programJobs.add(jobs.get(finalChoiceJobId-1));
                 } else {
@@ -682,7 +690,7 @@ public class Admin {
                 System.out.println("Le choix n'est pas valide");
             }
         } while (choiceJobId != (jobs.size() + 1));
-        ProgramSQL.AddProgram(name, description, Program.setJobIds(programJobs));
+        ProgramSQL.AddProgram(name, description, Program.SetJobIds(programJobs));
         MenuAdmin();
     }
     private static void CreateModule(Scanner scan){

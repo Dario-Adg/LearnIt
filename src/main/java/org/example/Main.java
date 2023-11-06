@@ -46,38 +46,31 @@ public class Main {
     private static void LogIn(){
         Scanner scan = new Scanner(System.in);
 
-        String login;
+        String email;
         do {
-            System.out.println("Renseignez votre login");
-            login = scan.nextLine();
-            if (login.isBlank()){
-                System.out.println("Login invalide ");
+            System.out.println("Renseignez votre email");
+            email = scan.nextLine();
+            if (email.isBlank()){
+                System.out.println("Votre email est vide veuillez réessayer");
             }
-        } while (login.isBlank());
+        } while (email.isBlank());
 
-        //String login = scan.nextLine();
-
-
-
-        //String password = scan.nextLine();
         String password;
         do {
             System.out.println("Renseignez votre mot de passe");
             password = scan.nextLine();
             if (password.isBlank()){
-                System.out.println("mdp invalide ");
+                System.out.println("Votre mot de passe est vide veuillez réessayer");
             }
         } while (password.isBlank());
 
-
-
-        User user = UserSQL.AuthenticateUser(login, password);
+        User user = UserSQL.AuthenticateUser(email, password);
         if (user == null){
             System.out.println("Erreur aucun utilisateur avec cette email ou mot de passe");
-        } else if (user.getIsAdmin()){
+        } else if (user.GetIsAdmin()){
             MenuAdmin();
         } else{
-            MenuUser(user.getId());
+            MenuUser(user.GetId());
         }
     }
 
@@ -89,45 +82,34 @@ public class Main {
             System.out.println("Renseignez votre email");
             email = scan.nextLine();
             if (email.isBlank()){
-                System.out.println("L'email est vide merci de renseignez un nouvelle email ");
+                System.out.println("Votre email est vide veuillez réessayer");
             }
         } while (email.isBlank());
-
-
-
-        //String password = scan.nextLine();
 
         String password;
         do {
             System.out.println("Renseignez votre mot de passe");
             password = scan.nextLine();
             if (password.isBlank()){
-                System.out.println("mdp est vide merci de renseignez un nouvelle mdp ");
+                System.out.println("Votre mot de passe est vide veuillez réessayer");
             }
         } while (password.isBlank());
 
-
-
-        //String firstName = scan.nextLine();
-
         String firstName;
         do {
-            System.out.println("Renseignez votre prenom");
+            System.out.println("Renseignez votre prénom");
             firstName = scan.nextLine();
             if (firstName.isBlank()){
-                System.out.println("veuiller renseignez votre prenom ");
+                System.out.println("Votre prénom est vide veuillez réessayer");
             }
         } while (firstName.isBlank());
-
-
-        //String lastName = scan.nextLine().toUpperCase();
 
         String lastName;
         do {
             System.out.println("Renseignez votre Nom");
             lastName = scan.nextLine();
             if (lastName.isBlank()){
-                System.out.println("veuiller renseignez votre Nom ");
+                System.out.println("Votre nom est vide veuillez réessayer");
             }
         } while (lastName.isBlank());
 
