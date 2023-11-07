@@ -19,48 +19,48 @@ public class Module {
     }
 
     //Getters
-    public int getId() {
+    public int GetId() {
         return this.Id;
     }
 
-    public String getName() {
+    public String GetName() {
         return this.Name;
     }
 
-    public String getDescription() {
+    public String GetDescription() {
         return this.Description;
     }
 
-    public List<Program> getPrograms() {
+    public List<Program> GetPrograms() {
         return this.Programs;
     }
 
-    public List<Lesson> getLessons() {
+    public List<Lesson> GetLessons() {
         return this.Lessons;
     }
 
-    public List<NoteModule> getNoteModules() {
+    public List<NoteModule> GetNoteModules() {
         return this.NoteModules;
     }
 
     // Setters
-    public void setId(int id) {
+    public void SetId(int id) {
         this.Id = id;
     }
 
-    public void setName(String name) {
+    public void SetName(String name) {
         this.Name = name;
     }
 
-    public void setDescription(String description) {
+    public void SetDescription(String description) {
         this.Description = description;
     }
 
-    public void addProgram(Program program) {
+    public void AddProgram(Program program) {
         this.Programs.add(program);
     }
 
-    public void addLesson(Lesson lesson) {
+    public void AddLesson(Lesson lesson) {
         this.Lessons.add(lesson);
     }
 }

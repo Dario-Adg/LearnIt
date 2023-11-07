@@ -25,11 +25,11 @@ public enum Job {
         this.FrenchLabel = frenchLabel;
     }
 
-    public int getId() {
+    public int GetId() {
         return this.Id;
     }
 
-    public String getFrenchLabel() {
+    public String GetFrenchLabel() {
         return this.FrenchLabel;
     }
 
@@ -37,10 +37,10 @@ public enum Job {
         return new ArrayList<>(Arrays.asList(Job.values()));
     }
 
-    public static String getJobNamesSeparatedByCommas(List<Job> jobList) {
+    public static String GetJobNamesSeparatedByCommas(List<Job> jobList) {
 
         return jobList.stream()
-                .map(Job::getFrenchLabel)
+                .map(Job::GetFrenchLabel)
                 .collect(Collectors.joining(", "));
     }
 }
