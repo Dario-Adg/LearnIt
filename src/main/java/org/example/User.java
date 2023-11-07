@@ -1,12 +1,9 @@
 package org.example;
 
-import dataBaseSQL.ProgramSQL;
-import dataBaseSQL.UserSQL;
-
 import java.util.Scanner;
 
 public class User {
-    public static void MenuUser(){
+    public static void MenuUser(int i){
         Scanner scan = new Scanner(System.in);
         int choix;
         do {
@@ -26,14 +23,7 @@ public class User {
         } while (choix != 3);
     }
     public static void GetUserPrograms(){
-        /*
         Scanner scan = new Scanner(System.in);
-        if (scan == null) {
-            ProgramSQL.GetProgramsByUserId(id);
-        }
-        System.out.println("Vous n'êtes inscrit à aucun parcour");
-        */
-
     }
     public static void AddUserProgram(){
         Scanner scan = new Scanner(System.in);

@@ -21,19 +21,19 @@ public class Program {
     }
 
     //Getters
-    public int getId() {
+    public int GetId() {
         return this.Id;
     }
 
-    public String getName() {
+    public String GetName() {
         return this.Name;
     }
 
-    public String getDescription() {
+    public String GetDescription() {
         return this.Description;
     }
 
-    public List<Job> getJobs() {
+    public List<Job> GetJobs() {
         if (this.JobIds.isBlank()){
             return new ArrayList<>();
         }
@@ -46,40 +46,40 @@ public class Program {
         List<Job> allJobs = Job.GetAllJobs();
 
         return allJobs.stream()
-                .filter(job -> jobIds.contains(job.getId()))
+                .filter(job -> jobIds.contains(job.GetId()))
                 .toList();
     }
 
-    public List<Module> getModules() {
+    public List<Module> GetModules() {
         return this.Modules;
     }
 
-    public List<UserProgram>  getProgramUsers() {
+    public List<UserProgram> GetProgramUsers() {
         return this.ProgramUsers;
     }
 
     // Setters
-    public void setId(int id) {
+    public void SetId(int id) {
         this.Id = id;
     }
 
-    public void setName(String name) {
+    public void SetName(String name) {
         this.Name = name;
     }
 
-    public void setDescription(String description) {
+    public void SetDescription(String description) {
         this.Description = description;
     }
 
-    public static String setJobIds (List<Job> jobs){
+    public static String SetJobIds (List<Job> jobs){
         return jobs.stream()
-                .map(Job::getId)
+                .map(Job::GetId)
                 .map(String::valueOf)
                 .sorted()
                 .collect(Collectors.joining(", "));
     }
 
-    public void addModule(Module module) {
+    public void AddModule(Module module) {
         this.Modules.add(module);
     }
 }

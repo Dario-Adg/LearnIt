@@ -1,21 +1,17 @@
 package org.example;
 
-import back.Job;
+import back.*;
 import back.Module;
-import back.Program;
-import back.UserProgram;
+import back.User;
+import dataBaseSQL.LessonSQL;
+import dataBaseSQL.ModuleSQL;
 import dataBaseSQL.ProgramSQL;
 import dataBaseSQL.UserSQL;
-import back.User;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.example.Main.MenuLoginInscription;
-import static org.example.User.MenuUser;
 
 public class Admin {
     public static void MenuAdmin(){
@@ -49,15 +45,16 @@ public class Admin {
             }
         } while (choice != 5);
     }
-    public static void GetUsers(){
+
+    private static void GetUsers(){
         List<User> users = UserSQL.GetUsers();
         if (users.isEmpty()){
             System.out.println("Aucun utilisateur");
         } else {
             for (User user: users) {
-                System.out.println("Id : " + user.getId());
-                System.out.println("Prénom : " + user.getFirstName());
-                System.out.println("Nom : " + user.getLastName());
+                System.out.println("Id : " + user.GetId());
+                System.out.println("Prénom : " + user.GetFirstName());
+                System.out.println("Nom : " + user.GetLastName());
                 System.out.println("--------------------------");
             }
             Scanner scan = new Scanner(System.in);
@@ -91,36 +88,36 @@ public class Admin {
                             }
                             User user = UserSQL.GetUserByIdForDisplay(userId);
                             if (user != null){
-                                System.out.println("Id : " + user.getId());
-                                System.out.println("Prénom : " + user.getFirstName());
-                                System.out.println("Nom : " + user.getLastName());
+                                System.out.println("Id : " + user.GetId());
+                                System.out.println("Prénom : " + user.GetFirstName());
+                                System.out.println("Nom : " + user.GetLastName());
                                 System.out.println("Date de naissance : " +
-                                        new SimpleDateFormat("dd MMMM yyyy").format(user.getDateOfBirth()));
-                                System.out.println("Chercheur d'emplois : " + (user.getIsJobSeeker() ? "Oui" : "Non"));
-                                System.out.println(user.getDiplomaNumber() != 0 ?
-                                        "Numéro diplôme : " + user.getDiplomaNumber() : "Pas encore de numéro de diplôme");
-                                List<UserProgram> userPrograms = user.getUserPrograms();
+                                        new SimpleDateFormat("dd MMMM yyyy").format(user.GetDateOfBirth()));
+                                System.out.println("Chercheur d'emplois : " + (user.GetIsJobSeeker() ? "Oui" : "Non"));
+                                System.out.println(user.GetDiplomaNumber() != 0 ?
+                                        "Numéro diplôme : " + user.GetDiplomaNumber() : "Pas encore de numéro de diplôme");
+                                List<UserProgram> userPrograms = user.GetUserPrograms();
                                 if (!userPrograms.isEmpty()){
                                     for (UserProgram userProgram: userPrograms) {
                                         System.out.println("**");
-                                        System.out.println("Id du parcours : " + userProgram.getProgram().getId());
-                                        System.out.println("Nom du parcours : " + userProgram.getProgram().getName());
+                                        System.out.println("Id du parcours : " + userProgram.GetProgram().GetId());
+                                        System.out.println("Nom du parcours : " + userProgram.GetProgram().GetName());
                                         System.out.println("Description du parcours : " +
-                                                userProgram.getProgram().getDescription());
-                                        boolean programValid = userProgram.isValid();
+                                                userProgram.GetProgram().GetDescription());
+                                        boolean programValid = userProgram.IsValid();
                                         System.out.println(programValid ? "Parcours validé" : "Parcours en cours");
                                         System.out.println(programValid ? "Parcours terminé" :
                                                 "Fin limite du parcours : " +
-                                                        new SimpleDateFormat("dd MMMM yyyy").format(userProgram.getEndDateProgram()));
+                                                        new SimpleDateFormat("dd MMMM yyyy").format(userProgram.GetEndDateProgram()));
                                         System.out.println("**");
                                     }
                                 } else {
-                                    System.out.println("Aucun parcours suivi par " + user.getFirstNameLastName());
+                                    System.out.println("Aucun parcours suivi par " + user.GetFirstNameLastName());
                                 }
                                 System.out.println("--------------------------");
                                 int choiceForAdmin;
                                 do {
-                                    System.out.println("Souhaitez-vous passer admin " + user.getFirstNameLastName() + " ?");
+                                    System.out.println("Souhaitez-vous passer admin " + user.GetFirstNameLastName() + " ?");
                                     System.out.println("1. Oui ");
                                     System.out.println("2. Non ");
                                     try {
@@ -153,7 +150,8 @@ public class Admin {
             } while (choice != 2);
         }
     }
-    public static void GetPrograms(){
+
+    private static void GetPrograms(){
         Scanner scan = new Scanner(System.in);
         List<Program> programs = ProgramSQL.GetPrograms();
         if (programs.isEmpty()){
@@ -173,21 +171,19 @@ public class Admin {
                     continue;
                 }
                 switch (choiceForCreateProgram){
-                    case 1 -> {
-                        CreateProgram(scan);
-                    }
+                    case 1 -> CreateProgram(scan);
                     case 2 -> MenuAdmin();
                     default -> System.out.println("Le choix n'est pas valide");
                 }
             } while (choiceForCreateProgram != 2);
         } else {
             for (Program program: programs) {
-                System.out.println("Id : " + program.getId());
-                System.out.println("Nom : " + program.getName());
-                System.out.println("Description: " + program.getDescription());
-                List<Job> jobs = program.getJobs();
+                System.out.println("Id : " + program.GetId());
+                System.out.println("Nom : " + program.GetName());
+                System.out.println("Description: " + program.GetDescription());
+                List<Job> jobs = program.GetJobs();
                 System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                        "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
+                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
                 System.out.println("--------------------------");
             }
             int choice;
@@ -222,20 +218,20 @@ public class Admin {
                             Program program = ProgramSQL.GetProgramByIdForDisplay(programId);
                             if (program != null){
                                 System.out.println("--------------------------");
-                                System.out.println("Id : " + program.getId());
-                                System.out.println("Nom : " + program.getName());
-                                System.out.println("Description: " + program.getDescription());
-                                List<Job> jobs = program.getJobs();
+                                System.out.println("Id : " + program.GetId());
+                                System.out.println("Nom : " + program.GetName());
+                                System.out.println("Description: " + program.GetDescription());
+                                List<Job> jobs = program.GetJobs();
                                 System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                                        "Débouchés professionnels : " + Job.getJobNamesSeparatedByCommas(jobs));
-                                List<Module> modules = program.getModules();
+                                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
+                                List<Module> modules = program.GetModules();
 
                                 if (!modules.isEmpty()){
                                     for (Module module: modules) {
                                         System.out.println("**");
-                                        System.out.println("Id du module : " + module.getId());
-                                        System.out.println("Nom du module : " + module.getName());
-                                        System.out.println("Description du module : " + module.getDescription());
+                                        System.out.println("Id du module : " + module.GetId());
+                                        System.out.println("Nom du module : " + module.GetName());
+                                        System.out.println("Description du module : " + module.GetDescription());
                                         System.out.println("**");
                                     }
                                 } else {
@@ -255,14 +251,399 @@ public class Admin {
             } while (choice != 3);
         }
     }
-    public static void GetModules(){
+
+    private static void GetModules(){
         Scanner scan = new Scanner(System.in);
-    }
-    public static void GetLessons(){
-        Scanner scan = new Scanner(System.in);
+        List<Module> modules = ModuleSQL.GetModules();
+        if (modules.isEmpty()){
+            System.out.println("Il n'existe aucun module");
+            int choiceForCreateModule;
+            do {
+                System.out.println("Souhaitez-vous créer un module ?");
+                System.out.println("1. Oui ");
+                System.out.println("2. Non ");
+                try {
+                    choiceForCreateModule = scan.nextInt();
+                } catch (InputMismatchException e) {
+                    // Gérer une entrée non numérique
+                    System.out.println("Veuillez entrer un chiffre.");
+                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                    choiceForCreateModule = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                    continue;
+                }
+                switch (choiceForCreateModule){
+                    case 1 -> CreateModule(scan);
+                    case 2 -> MenuAdmin();
+                    default -> System.out.println("Le choix n'est pas valide");
+                }
+            } while (choiceForCreateModule != 2);
+        } else {
+            for (Module module: modules) {
+                System.out.println("Id : " + module.GetId());
+                System.out.println("Nom : " + module.GetName());
+                System.out.println("Description: " + module.GetDescription());
+                System.out.println("--------------------------");
+            }
+            int choice;
+            do {
+                System.out.println("1. Sélectionner un module");
+                System.out.println("2. Créer un module ");
+                System.out.println("3. Sortir ");
+                System.out.println("--------------------------");
+                try {
+                    choice = scan.nextInt();
+                } catch (InputMismatchException e) {
+                    // Gérer une entrée non numérique
+                    System.out.println("Veuillez entrer un chiffre.");
+                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                    choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                    continue;
+                }
+                switch (choice) {
+                    case 1 -> {
+                        int moduleId;
+                        do{
+                            System.out.println("Indiquer l'Id du module souhaité");
+                            try {
+                                moduleId = scan.nextInt();
+                            } catch (InputMismatchException e) {
+                                // Gérer une entrée non numérique
+                                System.out.println("Veuillez entrer un chiffre.");
+                                scan.nextLine(); // Nettoyer le tampon d'entrée
+                                moduleId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                continue;
+                            }
+                            Module module = ModuleSQL.GetModuleByIdForDisplay(moduleId);
+                            if (module != null){
+                                System.out.println("--------------------------");
+                                System.out.println("Id : " + module.GetId());
+                                System.out.println("Nom : " + module.GetName());
+                                System.out.println("Description: " + module.GetDescription());
+
+                                if (!module.GetPrograms().isEmpty()){
+                                    for (Program program: module.GetPrograms()) {
+                                        System.out.println("**");
+                                        System.out.println("Id du parcours : " + program.GetId());
+                                        System.out.println("Nom du parcours : " + program.GetName());
+                                        System.out.println("Description du parcours : " + program.GetDescription());
+                                        System.out.println("**");
+                                    }
+                                } else {
+                                    System.out.println("Aucun parcours ne possèdent ce module");
+                                }
+
+                                if (!module.GetLessons().isEmpty()){
+                                    for (Lesson lesson: module.GetLessons()) {
+                                        System.out.println("**");
+                                        System.out.println("Id du cours : " + lesson.GetId());
+                                        System.out.println("Nom du cours : " + lesson.GetName());
+                                        System.out.println("Description du cours : " + lesson.GetDescription());
+                                        System.out.println("**");
+                                    }
+                                } else {
+                                    System.out.println("Aucun cours dans ce module");
+                                }
+
+                                System.out.println("--------------------------");
+                                int choiceForSelectedModule;
+                                do {
+                                    System.out.println("1. Attribuer ce module à un parcours");
+                                    System.out.println("2. Supprimer ce module d'un parcours");
+                                    System.out.println("3. Modifier ce module");
+                                    System.out.println("4. Supprimer ce module");
+                                    System.out.println("5. Revenir au menu admin");
+                                    System.out.println("--------------------------");
+                                    try {
+                                        choiceForSelectedModule = scan.nextInt();
+                                    } catch (InputMismatchException e) {
+                                        // Gérer une entrée non numérique
+                                        System.out.println("Veuillez entrer un chiffre.");
+                                        scan.nextLine(); // Nettoyer le tampon d'entrée
+                                        choiceForSelectedModule = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                        continue;
+                                    }
+                                    switch (choiceForSelectedModule){
+                                        case 1 -> {
+                                            List<Program> programs = ProgramSQL.GetPrograms();
+                                            for (Program program: programs) {
+                                                System.out.println("Id : " + program.GetId());
+                                                System.out.println("Nom : " + program.GetName());
+                                                System.out.println("Description: " + program.GetDescription());
+                                                System.out.println("--------------------------");
+                                            }
+                                            int programId;
+                                            do{
+                                                System.out.println("Indiquer l'Id du program ou vous souhaitez ajouté ce module");
+                                                try {
+                                                    programId = scan.nextInt();
+                                                } catch (InputMismatchException e) {
+                                                    // Gérer une entrée non numérique
+                                                    System.out.println("Veuillez entrer un chiffre.");
+                                                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                                                    programId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                                    continue;
+                                                }
+                                                int finalProgramId = programId;
+                                                if (programs.stream().anyMatch(program -> program.GetId() == finalProgramId)){
+                                                    ProgramSQL.AddProgramModule(finalProgramId, module.GetId());
+                                                }
+                                                else{
+                                                    System.out.println("Indiquer un l'id d'un program valide");
+                                                }
+                                            } while (programId == 0);
+                                        }
+                                        case 2 -> {
+                                            List<Program> programs = ProgramSQL.GetProgramsByModuleId(module.GetId());
+                                            if (programs.isEmpty()){
+                                                System.out.println("Aucun program ne possède ce parcours");
+                                            } else {
+                                                for (Program program: programs) {
+                                                    System.out.println("Id : " + program.GetId());
+                                                    System.out.println("Nom : " + program.GetName());
+                                                    System.out.println("Description: " + program.GetDescription());
+                                                    System.out.println("--------------------------");
+                                                }
+                                                int programId;
+                                                do{
+                                                    System.out.println("Indiquer l'Id du program ou vous souhaitez supprimé ce module");
+                                                    try {
+                                                        programId = scan.nextInt();
+                                                    } catch (InputMismatchException e) {
+                                                        // Gérer une entrée non numérique
+                                                        System.out.println("Veuillez entrer un chiffre.");
+                                                        scan.nextLine(); // Nettoyer le tampon d'entrée
+                                                        programId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                                        continue;
+                                                    }
+                                                    int finalProgramId = programId;
+                                                    if (programs.stream().anyMatch(program -> program.GetId() == finalProgramId)){
+                                                        ProgramSQL.DeleteProgramModule(finalProgramId, module.GetId());
+                                                    }
+                                                    else{
+                                                        System.out.println("Indiquer un l'id d'un program valide");
+                                                    }
+                                                } while (programId == 0);
+                                            }
+                                        }
+                                        case 3 -> {
+                                            scan.nextLine();
+                                            System.out.println("Indiquer le nouveau nom, " +
+                                                    "laissé vide si vous souhaitez ne pas changé");
+                                            String newName = scan.nextLine();
+                                            System.out.println("Indiquer la nouvelle description, " +
+                                                    "laissé vide si vous souhaitez ne pas changé");
+                                            String newDescription = scan.nextLine();
+                                            if (newName.isBlank()){
+                                                newName = module.GetName();
+                                            }
+                                            if (newDescription.isBlank()){
+                                                newDescription = module.GetDescription();
+                                            }
+                                            ModuleSQL.UpdateModule(module.GetId(), newName, newDescription);
+                                        }
+                                        case 4 -> ModuleSQL.DeleteModule(module.GetId());
+                                        case 5 -> MenuAdmin();
+                                        default -> System.out.println("Le choix n'est pas valide");
+                                    }
+                                } while (choiceForSelectedModule != 5);
+                            } else {
+                                System.out.println("Le module n'existe pas");
+                                break;
+                            }
+                        } while (moduleId == 0);
+                    }
+                    case 2 -> CreateModule(scan);
+                    case 3 -> MenuAdmin();
+                    default -> System.out.println("Le choix n'est pas valide");
+                }
+            } while (choice != 3);
+        }
     }
 
-    public static void CreateProgram(Scanner scan){
+    private static void GetLessons(){
+        Scanner scan = new Scanner(System.in);
+        List<Lesson> lessons = LessonSQL.GetLessons();
+        if (lessons.isEmpty()){
+            System.out.println("Il n'existe aucun cours");
+            int choiceForCreateLesson;
+            do {
+                System.out.println("Souhaitez-vous créer un cours ?");
+                System.out.println("1. Oui ");
+                System.out.println("2. Non ");
+                try {
+                    choiceForCreateLesson = scan.nextInt();
+                } catch (InputMismatchException e) {
+                    // Gérer une entrée non numérique
+                    System.out.println("Veuillez entrer un chiffre.");
+                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                    choiceForCreateLesson = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                    continue;
+                }
+                switch (choiceForCreateLesson){
+                    case 1 -> CreateLesson(scan);
+                    case 2 -> MenuAdmin();
+                    default -> System.out.println("Le choix n'est pas valide");
+                }
+            } while (choiceForCreateLesson != 2);
+        } else {
+            for (Lesson lesson: lessons) {
+                System.out.println("Id : " + lesson.GetId());
+                System.out.println("Nom : " + lesson.GetName());
+                System.out.println("Description: " + lesson.GetDescription());
+                System.out.println("--------------------------");
+            }
+            int choice;
+            do {
+                System.out.println("1. Sélectionner un cours");
+                System.out.println("2. Créer un cours ");
+                System.out.println("3. Sortir ");
+                System.out.println("--------------------------");
+                try {
+                    choice = scan.nextInt();
+                } catch (InputMismatchException e) {
+                    // Gérer une entrée non numérique
+                    System.out.println("Veuillez entrer un chiffre.");
+                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                    choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                    continue;
+                }
+                switch (choice) {
+                    case 1 -> {
+                        int lessonId;
+                        do{
+                            System.out.println("Indiquer l'Id du cours souhaité");
+                            try {
+                                lessonId = scan.nextInt();
+                            } catch (InputMismatchException e) {
+                                // Gérer une entrée non numérique
+                                System.out.println("Veuillez entrer un chiffre.");
+                                scan.nextLine(); // Nettoyer le tampon d'entrée
+                                lessonId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                continue;
+                            }
+                            Lesson lesson = LessonSQL.GetLessonByIdForDisplay(lessonId);
+                            if (lesson != null){
+                                System.out.println("--------------------------");
+                                System.out.println("Id : " + lesson.GetId());
+                                System.out.println("Nom : " + lesson.GetName());
+                                System.out.println("Description: " + lesson.GetDescription());
+                                System.out.println("--------------------------");
+                                int choiceForSelectedLesson;
+                                do {
+                                    System.out.println("1. Attribuer ce cours à un module");
+                                    System.out.println("2. Supprimer ce cours d'un module");
+                                    System.out.println("3. Modifier ce cours");
+                                    System.out.println("4. Supprimer ce cours");
+                                    System.out.println("5. Revenir au menu admin");
+                                    System.out.println("--------------------------");
+                                    try {
+                                        choiceForSelectedLesson = scan.nextInt();
+                                    } catch (InputMismatchException e) {
+                                        // Gérer une entrée non numérique
+                                        System.out.println("Veuillez entrer un chiffre.");
+                                        scan.nextLine(); // Nettoyer le tampon d'entrée
+                                        choiceForSelectedLesson = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                        continue;
+                                    }
+                                    switch (choiceForSelectedLesson){
+                                        case 1 -> {
+                                            List<Module> modules = ModuleSQL.GetModules();
+                                            for (Module module: modules) {
+                                                System.out.println("Id : " + module.GetId());
+                                                System.out.println("Nom : " + module.GetName());
+                                                System.out.println("Description: " + module.GetDescription());
+                                                System.out.println("--------------------------");
+                                            }
+                                            int moduleId;
+                                            do{
+                                                System.out.println("Indiquer l'Id du module ou vous souhaitez ajouté ce cours");
+                                                try {
+                                                    moduleId = scan.nextInt();
+                                                } catch (InputMismatchException e) {
+                                                    // Gérer une entrée non numérique
+                                                    System.out.println("Veuillez entrer un chiffre.");
+                                                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                                                    moduleId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                                    continue;
+                                                }
+                                                int finalModuleId = moduleId;
+                                                if (modules.stream().anyMatch(module -> module.GetId() == finalModuleId)){
+                                                    ModuleSQL.AddModuleLesson(finalModuleId, lesson.GetId());
+                                                }
+                                                else{
+                                                    System.out.println("Indiquer un l'id d'un module valide");
+                                                }
+                                            } while (moduleId == 0);
+                                        }
+                                        case 2 -> {
+                                            List<Module> modules = ModuleSQL.GetModulesWithThisLesson(lesson.GetId());
+                                            if (modules.isEmpty()){
+                                                System.out.println("Aucun module ne possède ce parcours");
+                                            } else {
+                                                for (Module module: modules) {
+                                                    System.out.println("Id : " + module.GetId());
+                                                    System.out.println("Nom : " + module.GetName());
+                                                    System.out.println("Description: " + module.GetDescription());
+                                                    System.out.println("--------------------------");
+                                                }
+                                                int moduleId;
+                                                do{
+                                                    System.out.println("Indiquer l'Id du module ou vous souhaitez supprimé ce cours");
+                                                    try {
+                                                        moduleId = scan.nextInt();
+                                                    } catch (InputMismatchException e) {
+                                                        // Gérer une entrée non numérique
+                                                        System.out.println("Veuillez entrer un chiffre.");
+                                                        scan.nextLine(); // Nettoyer le tampon d'entrée
+                                                        moduleId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                                        continue;
+                                                    }
+                                                    int finalModuleId = moduleId;
+                                                    if (modules.stream().anyMatch(module -> module.GetId() == finalModuleId)){
+                                                        ModuleSQL.DeleteModuleLesson(finalModuleId, lesson.GetId());
+                                                    }
+                                                    else{
+                                                        System.out.println("Indiquer un l'id d'un module valide");
+                                                    }
+                                                } while (moduleId == 0);
+                                            }
+                                        }
+                                        case 3 -> {
+                                            scan.nextLine();
+                                            System.out.println("Indiquer le nouveau nom, " +
+                                                    "laissé vide si vous souhaitez ne pas changé");
+                                            String newName = scan.nextLine();
+                                            System.out.println("Indiquer la nouvelle description, " +
+                                                    "laissé vide si vous souhaitez ne pas changé");
+                                            String newDescription = scan.nextLine();
+                                            if (newName.isBlank()){
+                                                newName = lesson.GetName();
+                                            }
+                                            if (newDescription.isBlank()){
+                                                newDescription = lesson.GetDescription();
+                                            }
+                                            LessonSQL.UpdateLesson(lesson.GetId(), newName, newDescription);
+                                        }
+                                        case 4 -> LessonSQL.DeleteLesson(lesson.GetId());
+                                        case 5 -> MenuAdmin();
+                                        default -> System.out.println("Le choix n'est pas valide");
+                                    }
+                                } while (choiceForSelectedLesson != 5);
+                            } else {
+                                System.out.println("Le cours n'existe pas");
+                                break;
+                            }
+                        } while (lessonId == 0);
+                    }
+                    case 2 -> CreateLesson(scan);
+                    case 3 -> MenuAdmin();
+                    default -> System.out.println("Le choix n'est pas valide");
+                }
+            } while (choice != 3);
+        }
+    }
+
+    private static void CreateProgram(Scanner scan){
         scan.nextLine();
         System.out.println("Renseignez un nom");
         String name = scan.nextLine();
@@ -274,7 +655,7 @@ public class Admin {
         boolean jobHasAdded = false;
         do{
             for (Job job: jobs) {
-                System.out.println(job.getId() + " : " + job.getFrenchLabel());
+                System.out.println(job.GetId() + " : " + job.GetFrenchLabel());
             }
             System.out.println((jobs.size() + 1) + " : Créer le parcours");
             if (!programJobs.isEmpty()){
@@ -296,7 +677,7 @@ public class Admin {
                 continue;
             }
             int finalChoiceJobId = choiceJobId;
-            if (jobs.stream().anyMatch(job -> job.getId() == finalChoiceJobId)){
+            if (jobs.stream().anyMatch(job -> job.GetId() == finalChoiceJobId)){
                 if (!programJobs.contains(jobs.get(finalChoiceJobId-1))){
                     programJobs.add(jobs.get(finalChoiceJobId-1));
                 } else {
@@ -309,7 +690,25 @@ public class Admin {
                 System.out.println("Le choix n'est pas valide");
             }
         } while (choiceJobId != (jobs.size() + 1));
-        ProgramSQL.AddProgram(name, description, Program.setJobIds(programJobs));
+        ProgramSQL.AddProgram(name, description, Program.SetJobIds(programJobs));
+        MenuAdmin();
+    }
+    private static void CreateModule(Scanner scan){
+        scan.nextLine();
+        System.out.println("Renseignez un nom");
+        String name = scan.nextLine();
+        System.out.println("Renseignez une description");
+        String description = scan.nextLine();
+        ModuleSQL.AddModule(name, description);
+        MenuAdmin();
+    }
+    private static void CreateLesson(Scanner scan){
+        scan.nextLine();
+        System.out.println("Renseignez un nom");
+        String name = scan.nextLine();
+        System.out.println("Renseignez une description");
+        String description = scan.nextLine();
+        LessonSQL.AddLesson(name, description);
         MenuAdmin();
     }
 }

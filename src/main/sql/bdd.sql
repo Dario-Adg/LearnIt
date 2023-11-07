@@ -34,8 +34,8 @@ CREATE TABLE `learnit`.`user_program` (
     `ProgramId` INT,
     `IsValid` BOOLEAN,
     `EndDateProgram` DATE,
-    FOREIGN KEY (UserId) REFERENCES `learnit`.`user`(id),
-    FOREIGN KEY (ProgramId) REFERENCES `learnit`.`program`(id)
+    FOREIGN KEY (UserId) REFERENCES `learnit`.`user`(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ProgramId) REFERENCES `learnit`.`program`(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE `learnit`.`module` (
@@ -48,8 +48,8 @@ CREATE TABLE `learnit`.`program_module` (
     `ProgramId` INT,
     `ModuleId` INT,
     PRIMARY KEY (ProgramId, ModuleId),
-    FOREIGN KEY (ProgramId) REFERENCES `learnit`.`program`(id),
-    FOREIGN KEY (ModuleId) REFERENCES `learnit`.`module`(id)
+    FOREIGN KEY (ProgramId) REFERENCES `learnit`.`program`(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ModuleId) REFERENCES `learnit`.`module`(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE `learnit`.`lesson` (
@@ -62,8 +62,8 @@ CREATE TABLE `learnit`.`module_lesson` (
     `ModuleId` INT,
     `LessonId` INT,
     PRIMARY KEY (ModuleId, LessonId),
-    FOREIGN KEY (ModuleId) REFERENCES `learnit`.`module`(id),
-    FOREIGN KEY (LessonId) REFERENCES `learnit`.`lesson`(id)
+    FOREIGN KEY (ModuleId) REFERENCES `learnit`.`module`(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (LessonId) REFERENCES `learnit`.`lesson`(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE `learnit`.`note_module` (
@@ -71,6 +71,6 @@ CREATE TABLE `learnit`.`note_module` (
     `ModuleId` INT,
     `Note` INT(10) NULL ,
     `IsValid` INT NOT NULL ,
-    FOREIGN KEY (UserId) REFERENCES `learnit`.`user`(id),
-    FOREIGN KEY (ModuleId) REFERENCES `learnit`.`module`(id)
+    FOREIGN KEY (UserId) REFERENCES `learnit`.`user`(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ModuleId) REFERENCES `learnit`.`module`(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
