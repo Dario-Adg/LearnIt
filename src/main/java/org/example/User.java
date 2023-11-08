@@ -1,9 +1,12 @@
 package org.example;
 
+import dataBaseSQL.UserSQL;
+
 import java.util.Scanner;
 
 public class User {
-    public static void MenuUser(int i){
+    public static void MenuUser(){
+
         Scanner scan = new Scanner(System.in);
         int choix;
         do {
