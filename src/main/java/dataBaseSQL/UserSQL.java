@@ -6,6 +6,7 @@ import back.UserProgram;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static dataBaseSQL.Helper.EncodeStringDateToDate;
@@ -154,6 +155,28 @@ public class UserSQL {
             } else {
                 System.out.println("Erreur lors du passage de cette utilisateur en admin");
             }
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
+
+    public static void AddUserProgram(int userId, int programId){
+        String sql = "INSERT INTO user_program (`UserId`, `ProgramId`, `IsValid`, `EndDateProgram`) VALUES (?,?,?,?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            preparedStatement.setBoolean(3, false);
+            Date date = new Date(new java.util.Date().getTime());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 1);
+            preparedStatement.setDate(4, new Date(calendar.getTime().getTime()));
+            preparedStatement.executeUpdate();
+            System.out.println("Module ajouté au program avec succès");
         } catch (SQLException ex) {
             //Handle any errors
             System.out.println("SQLException : " +ex.getMessage());

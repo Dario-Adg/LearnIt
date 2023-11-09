@@ -70,7 +70,7 @@ public class Main {
         } else if (user.GetIsAdmin()){
             MenuAdmin();
         } else{
-            MenuUser();
+            MenuUser(user.GetId());
         }
     }
 
