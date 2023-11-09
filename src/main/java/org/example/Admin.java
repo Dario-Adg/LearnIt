@@ -237,7 +237,58 @@ public class Admin {
                                 } else {
                                     System.out.println("Aucun module dans ce parcours");
                                 }
-                                System.out.println("--------------------------");
+                                do{
+                                    System.out.println("--------------------------");
+                                    System.out.println("1. Modifier un parcoure");
+                                    System.out.println("2. Suprimer un parcoure ");
+                                    System.out.println("3. Sortir ");
+                                    System.out.println("--------------------------");
+                                    try {
+
+                                        choice = scan.nextInt();
+                                    } catch (InputMismatchException e) {
+                                        // Gérer une entrée non numérique
+                                        System.out.println("Veuillez entrer un chiffre.");
+                                        scan.nextLine(); // Nettoyer le tampon d'entrée
+                                        choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                        continue;
+                                    }
+                                    switch (choice){
+                                        case 1 -> {
+                                            do {
+                                                if (program != null) {
+                                                    System.out.println("--------------------------");
+                                                    System.out.println("Nom Actuel: " + program.getName());
+                                                    System.out.println("Nouveau Nom : " + scan.nextLine());
+                                                    System.out.println("--------------------------");
+                                                    System.out.println("Description Actuel: " + program.getDescription());
+                                                    System.out.println("Nouvelle Description: " + scan.nextLine());
+                                                    System.out.println("--------------------------");
+                                                    System.out.println("La liste actuelle:" + Job.getJobNamesSeparatedByCommas(jobs));
+                                                    System.out.println("nouvelle liste:" + scan.nextLine());
+                                                    System.out.println("--------------------------");
+
+                                                    ProgramSQL.UpdateProgram(program.getName(), program.getDescription(), program.getJobs().toString(), program.getId());
+                                                } else {
+                                                    System.out.println("Une erreur s'est produit, Réessayer avec des bonnes valeurs");
+                                                    break;
+                                                }
+                                            } while (choice !=3);
+                                            System.out.println("Vous vous êtes bien déconnecter");
+                                        }
+                                        case 2 -> {
+                                            if (program != null) {
+                                                ProgramSQL.DelateProgram(programId);
+                                                System.out.println("Le parcoure à bien été supprimer");
+                                            } else {
+                                                System.out.println("Une erreur s'est produit, Réessayer avec des bonnes valeurs");
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                } while (choice != 3);
+                                System.out.println("Vous vous êtes bien déconnecter");
                             } else {
                                 System.out.println("Le parcours n'existe pas");
                                 break;
