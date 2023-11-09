@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class User {
-    public static void MenuUser(int userId){
+    public static void MenuUser(){
         Scanner scan = new Scanner(System.in);
         int choix;
         do {
@@ -25,7 +25,7 @@ public class User {
             choix = scan.nextInt();
 
             switch (choix) {
-                case 1 -> GetUserPrograms(userId);
+                case 1 -> GetUserPrograms(0);
                 case 2 -> AddUserProgram();
                 case 3 -> System.out.println("A bientôt");
                 default -> System.out.println("Le choix n'est pas valide");

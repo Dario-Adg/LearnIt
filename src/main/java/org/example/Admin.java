@@ -221,9 +221,9 @@ public class Admin {
                                 System.out.println("Id : " + program.GetId());
                                 System.out.println("Nom : " + program.GetName());
                                 System.out.println("Description: " + program.GetDescription());
-                                List<Job> jobs = program.GetJobs();
-                                System.out.println(jobs.isEmpty() ? "Pas de débouché professionnel" :
-                                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(jobs));
+                                List<Job> programJobs = program.GetJobs();
+                                System.out.println(programJobs.isEmpty() ? "Pas de débouché professionnel" :
+                                        "Débouchés professionnels : " + Job.GetJobNamesSeparatedByCommas(programJobs));
                                 List<Module> modules = program.GetModules();
 
                                 if (!modules.isEmpty()){
@@ -237,58 +237,88 @@ public class Admin {
                                 } else {
                                     System.out.println("Aucun module dans ce parcours");
                                 }
+                                int choiceForProgram;
                                 do{
                                     System.out.println("--------------------------");
-                                    System.out.println("1. Modifier un parcoure");
-                                    System.out.println("2. Suprimer un parcoure ");
+                                    System.out.println("1. Modifier ce parcours");
+                                    System.out.println("2. Supprimer ce parcours ");
                                     System.out.println("3. Sortir ");
                                     System.out.println("--------------------------");
                                     try {
-
-                                        choice = scan.nextInt();
+                                        choiceForProgram = scan.nextInt();
                                     } catch (InputMismatchException e) {
                                         // Gérer une entrée non numérique
                                         System.out.println("Veuillez entrer un chiffre.");
                                         scan.nextLine(); // Nettoyer le tampon d'entrée
-                                        choice = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                        choiceForProgram = 0; // Réinitialiser le choix pour éviter une boucle infinie
                                         continue;
                                     }
-                                    switch (choice){
+                                    switch (choiceForProgram){
                                         case 1 -> {
-                                            do {
-                                                if (program != null) {
-                                                    System.out.println("--------------------------");
-                                                    System.out.println("Nom Actuel: " + program.getName());
-                                                    System.out.println("Nouveau Nom : " + scan.nextLine());
-                                                    System.out.println("--------------------------");
-                                                    System.out.println("Description Actuel: " + program.getDescription());
-                                                    System.out.println("Nouvelle Description: " + scan.nextLine());
-                                                    System.out.println("--------------------------");
-                                                    System.out.println("La liste actuelle:" + Job.getJobNamesSeparatedByCommas(jobs));
-                                                    System.out.println("nouvelle liste:" + scan.nextLine());
-                                                    System.out.println("--------------------------");
+                                            scan.nextLine();
+                                            System.out.println("Indiquer le nouveau nom, " +
+                                                    "laissé vide si vous souhaitez ne pas changé");
+                                            String newName = scan.nextLine();
+                                            if (newName.isBlank()){
+                                                newName = program.GetName();
+                                            }
 
-                                                    ProgramSQL.UpdateProgram(program.getName(), program.getDescription(), program.getJobs().toString(), program.getId());
-                                                } else {
-                                                    System.out.println("Une erreur s'est produit, Réessayer avec des bonnes valeurs");
+                                            System.out.println("Indiquer la nouvelle description, " +
+                                                    "laissé vide si vous souhaitez ne pas changé");
+                                            String newDescription = scan.nextLine();
+                                            if (newDescription.isBlank()){
+                                                newDescription = program.GetDescription();
+                                            }
+
+                                            List<Job> jobs = Job.GetAllJobs();
+                                            int choiceJobId;
+                                            List<Job> newProgramJobs = new ArrayList<>();
+                                            boolean jobHasAdded = false;
+                                            do{
+                                                for (Job job: jobs) {
+                                                    System.out.println(job.GetId() + " : " + job.GetFrenchLabel());
+                                                }
+                                                System.out.println((jobs.size() + 1) + " : Modifier le parcours");
+                                                if (!newProgramJobs.isEmpty()){
+                                                    if (jobHasAdded){
+                                                        System.out.println("Métier déjà ajouté");
+                                                        jobHasAdded = false;
+                                                    } else {
+                                                        System.out.println("Métier ajouté avec succés");
+                                                    }
+                                                }
+                                                System.out.println("Renseignez l'id du métier débouché ou " + (jobs.size() + 1) + "pour modifier le parcours");
+                                                try {
+                                                    choiceJobId = scan.nextInt();
+                                                } catch (InputMismatchException e) {
+                                                    // Gérer une entrée non numérique
+                                                    System.out.println("Veuillez entrer un chiffre.");
+                                                    scan.nextLine(); // Nettoyer le tampon d'entrée
+                                                    choiceJobId = 0; // Réinitialiser le choix pour éviter une boucle infinie
+                                                    continue;
+                                                }
+                                                int finalChoiceJobId = choiceJobId;
+                                                if (jobs.stream().anyMatch(job -> job.GetId() == finalChoiceJobId)){
+                                                    if (!newProgramJobs.contains(jobs.get(finalChoiceJobId-1))){
+                                                        newProgramJobs.add(jobs.get(finalChoiceJobId-1));
+                                                    } else {
+                                                        jobHasAdded = true;
+                                                    }
+                                                } else if (choiceJobId == (jobs.size()+1)) {
                                                     break;
                                                 }
-                                            } while (choice !=3);
-                                            System.out.println("Vous vous êtes bien déconnecter");
-                                        }
-                                        case 2 -> {
-                                            if (program != null) {
-                                                ProgramSQL.DelateProgram(programId);
-                                                System.out.println("Le parcoure à bien été supprimer");
-                                            } else {
-                                                System.out.println("Une erreur s'est produit, Réessayer avec des bonnes valeurs");
-                                                break;
-                                            }
-                                        }
-                                    }
+                                                else {
+                                                    System.out.println("Le choix n'est pas valide");
+                                                }
+                                            } while (choiceJobId != (jobs.size() + 1));
 
-                                } while (choice != 3);
-                                System.out.println("Vous vous êtes bien déconnecter");
+                                            ProgramSQL.UpdateProgram(newName, newDescription, Program.SetJobIds(newProgramJobs),
+                                                    program.GetId());
+                                        }
+                                        case 2 -> ProgramSQL.DeleteProgram(program.GetId());
+                                        case 3 -> MenuAdmin();
+                                    }
+                                } while (choiceForProgram != 3);
                             } else {
                                 System.out.println("Le parcours n'existe pas");
                                 break;
@@ -717,7 +747,7 @@ public class Admin {
                     System.out.println("Métier ajouté avec succés");
                 }
             }
-            System.out.println("Renseignez l'id du métier débouché ou le nombre pour créer le parcours");
+            System.out.println("Renseignez l'id du métier débouché ou " + (jobs.size() + 1) + " pour créer le parcours");
             try {
                 choiceJobId = scan.nextInt();
             } catch (InputMismatchException e) {

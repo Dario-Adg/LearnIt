@@ -113,10 +113,8 @@ public class ProgramSQL {
         }
     }
 
-    //Modifier Parcoure
     public static void UpdateProgram(String name, String description, String jobIds, int id){
-        String sql = "UPDATE `program` SET `Name`=?,`Description`=? WHERE Id=?";
-
+        String sql = "UPDATE `program` SET `Name` = ?,`Description` = ?, `JobIds` = ? WHERE Id = ?";
 
         try (PreparedStatement prepareStatement = connection.prepareStatement(sql)) {
             prepareStatement.setString(1, name);
@@ -133,9 +131,8 @@ public class ProgramSQL {
         }
     }
 
-    //Supprimer Parcoure
-    public static void DelateProgram(int id){
-        String sql = "DELETE FROM `program` WHERE `id`=?";
+    public static void DeleteProgram(int id){
+        String sql = "DELETE FROM `program` WHERE `id` = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setInt(1, id);
@@ -146,7 +143,6 @@ public class ProgramSQL {
             System.out.println("SQLState : " + ex.getSQLState());
             System.out.println("VendorError : " + ex.getErrorCode());
         }
-
     }
 
     public static Program GetProgramByIdForDisplay(int programId){
