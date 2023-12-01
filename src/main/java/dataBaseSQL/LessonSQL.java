@@ -124,4 +124,46 @@ public class LessonSQL {
             System.out.println("VendorError : " + ex.getErrorCode());
         }
     }
+
+    public static boolean LessonIsValidInProgram(int userId, int programId, int moduleId, int lessonId) {
+        String sql = "SELECT EXISTS (SELECT 1 FROM note_lesson WHERE note_lesson.UserId = ? AND note_lesson.ProgramId = ? " +
+                "AND note_lesson.ModuleId = ? AND note_lesson.LessonId = ?)";
+        boolean moduleValid = false;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            preparedStatement.setInt(3, moduleId);
+            preparedStatement.setInt(4, lessonId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                moduleValid = resultSet.next();
+            }
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+        return moduleValid;
+    }
+
+    public static void ValidLessonInProgram(int userId, int programId, int moduleId, int lessonId){
+        String sql = "INSERT INTO note_lesson (`UserId`, `ProgramId`, `ModuleId`, `LessonId`, `IsValid`) VALUES (?,?,?,?,?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            preparedStatement.setInt(3, moduleId);
+            preparedStatement.setInt(4, lessonId);
+            preparedStatement.setBoolean(5, true);
+            preparedStatement.executeUpdate();
+            System.out.println("****");
+            System.out.println("**Cours validé**");
+            System.out.println("****");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
 }

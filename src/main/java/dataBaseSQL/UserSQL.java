@@ -176,9 +176,24 @@ public class UserSQL {
             calendar.add(Calendar.YEAR, 1);
             preparedStatement.setDate(4, new Date(calendar.getTime().getTime()));
             preparedStatement.executeUpdate();
-            System.out.println("Module ajouté au program avec succès");
+            System.out.println("Inscription au parcours effectuer");
         } catch (SQLException ex) {
             //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
+
+    public static void DeleteUserProgram(int userId, int programId){
+        String sql = "DELETE FROM `user_program` WHERE `UserId ` = ? AND `ProgramId` = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(1, programId);
+            preparedStatement.executeUpdate();
+            System.out.println("Désinscription du parcours effectuer avec succès");
+        }catch (SQLException ex){
             System.out.println("SQLException : " +ex.getMessage());
             System.out.println("SQLState : " + ex.getSQLState());
             System.out.println("VendorError : " + ex.getErrorCode());

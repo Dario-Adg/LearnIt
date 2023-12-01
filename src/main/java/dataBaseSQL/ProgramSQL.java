@@ -1,9 +1,7 @@
 package dataBaseSQL;
 
+import back.*;
 import back.Module;
-import back.Program;
-import back.User;
-import back.UserProgram;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -81,6 +79,16 @@ public class ProgramSQL {
                     String jobIds = resultSet.getString("JobIds");
                     Program program = new Program(id, name, description, jobIds);
                     boolean isValid = resultSet.getBoolean("IsValid");
+                    if (!isValid){
+                        List<Module> modules = ModuleSQL.GetModulesByProgramId(id);
+                        for (Module module: modules) {
+                            List<Lesson> lessons = LessonSQL.GetLessonsByModuleId(module.GetId());
+                            for (Lesson lesson: lessons) {
+                                module.AddLesson(lesson);
+                            }
+                            program.AddModule(module);
+                        }
+                    }
                     Date endDateProgram = resultSet.getDate("EndDateProgram");
                     UserProgram userProgram = new UserProgram(null, program, isValid, endDateProgram);
 
@@ -182,7 +190,7 @@ public class ProgramSQL {
             preparedStatement.setInt(1, programId);
             preparedStatement.setInt(2, moduleId);
             preparedStatement.executeUpdate();
-            System.out.println("Module ajouté au program avec succès");
+            System.out.println("Module ajouté au parcours avec succès");
         } catch (SQLException ex) {
             //Handle any errors
             System.out.println("SQLException : " +ex.getMessage());
@@ -199,7 +207,26 @@ public class ProgramSQL {
             preparedStatement.setInt(1, programId);
             preparedStatement.setInt(2, moduleId);
             preparedStatement.executeUpdate();
-            System.out.println("Module supprimé du program avec succès");
+            System.out.println("Module supprimé du parcours avec succès");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+    }
+
+    public static void ValidProgram(int userId, int programId){
+        String sql = "UPDATE user_program SET `IsValid` = ? WHERE `UserId` = ? AND `ProgramId` = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setBoolean(1, true);
+            preparedStatement.setInt(2, userId);
+            preparedStatement.setInt(3, programId);
+            preparedStatement.executeUpdate();
+            System.out.println("****");
+            System.out.println("**Parcours validé**");
+            System.out.println("****");
         } catch (SQLException ex) {
             //Handle any errors
             System.out.println("SQLException : " +ex.getMessage());

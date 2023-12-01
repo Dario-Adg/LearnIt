@@ -1,9 +1,7 @@
 package dataBaseSQL;
 
-import back.Lesson;
+import back.*;
 import back.Module;
-import back.Program;
-import back.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -201,5 +199,47 @@ public class ModuleSQL {
             System.out.println("VendorError : " + ex.getErrorCode());
         }
         return modules;
+    }
+
+    public static boolean ModuleIsValidInProgram(int userId, int programId, int moduleId) {
+        String sql = "SELECT * FROM note_module WHERE note_module.UserId = ? AND note_module.ProgramId = ? " +
+                "AND note_module.ModuleId = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            preparedStatement.setInt(3, moduleId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean("IsValid");
+                }
+            }
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
+        return false;
+    }
+
+    public static void ValidModuleInProgram(int userId, int programId, int moduleId){
+        String sql = "INSERT INTO note_module (`UserId`, `ProgramId`, `ModuleId`, `Note`, `IsValid`) VALUES (?,?,?,?,?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, programId);
+            preparedStatement.setInt(3, moduleId);
+            preparedStatement.setInt(4, 0);
+            preparedStatement.setBoolean(5, true);
+            preparedStatement.executeUpdate();
+            System.out.println("****");
+            System.out.println("**Module validé**");
+            System.out.println("****");
+        } catch (SQLException ex) {
+            //Handle any errors
+            System.out.println("SQLException : " +ex.getMessage());
+            System.out.println("SQLState : " + ex.getSQLState());
+            System.out.println("VendorError : " + ex.getErrorCode());
+        }
     }
 }
